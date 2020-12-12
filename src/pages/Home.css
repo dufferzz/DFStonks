@@ -1,0 +1,144 @@
+.card {
+  width: 90%;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #aaa;
+  padding: 1rem;
+  margin: 1rem auto;
+  min-height: 200px;
+}
+
+.cardImage {
+  width: 150px !important;
+  height: 200px !important;
+}
+.container {
+  align-items: center;
+  justify-content: center;
+  width: 95%;
+  margin: auto;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid #aaa;
+  min-height: 95vh;
+  background-color: white;
+}
+
+.contentContainer {
+  background-color: white;
+}
+.image {
+  float: left;
+  height: 150px;
+}
+.title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+.desc {
+  font-size: 0.9rem;
+  max-width: 80%;
+  float: right;
+  text-align: left;
+}
+.seeds {
+  color: green;
+}
+.peers {
+  color: red;
+}
+
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchBox {
+  display: block;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.header {
+  font-size: 1.8rem;
+  padding: 1rem;
+  font-weight: bold;
+}
+.graph {
+  position: relative;
+}
+
+.ToggleGraph {
+  right: 0;
+  position: absolute;
+  display: inline-block;
+}
+
+.topBar {
+  position: relative;
+  display: flex;
+}
+
+.stockName {
+  color: #12939a;
+  position: absolute;
+  top: 0;
+  left: 10%;
+}
+
+.hoverTile {
+  position: absolute;
+  background-color: black;
+  color: red;
+}
+
+.TLBox {
+  display: flex;
+}
+
+.TLCornerBox1 {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 0.5rem;
+  z-index: 1000;
+  min-width: 3em;
+  border: 2px solid rgba(0, 0, 0, 0.7);
+}
+
+.TLCornerBoxLow {
+  text-align: center;
+  color: black;
+  background-color: rgba(255, 0, 0, 0.5);
+  min-width: 5em;
+  border-radius: 5px;
+  padding: 0.5rem;
+  z-index: 1000;
+  border: 2px solid rgba(255, 0, 0, 0.7);
+}
+.TLCornerBoxHigh {
+  min-width: 5em;
+  color: black;
+
+  background-color: rgba(0, 255, 0, 0.5);
+  border-radius: 5px;
+  padding: 0.5rem;
+  z-index: 1000;
+  border: 2px solid rgba(0, 255, 0, 0.7);
+}
+
+.currentPrice {
+}
+
+.tablee {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+.tablee thead {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.5rem;
+}
