@@ -1,6 +1,6 @@
 # Simple testing of React with SocketIO and React-Vis
 
-![StonkShot](screenshot.png?raw=true "Stonks Screenshot")
+![StonkShot](chrome-capture.gif?raw=true "Stonks Screenshot")
 
 POC Mostly.. very badly implemented, RNG Based. No data makes sense asides from Time
 
