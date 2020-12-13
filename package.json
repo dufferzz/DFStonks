@@ -24,7 +24,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "HOST=0.0.0.0 react-scripts start",
+    "start": "concurrently \"npm run startserver\" \"npm run startclient\"",
+    "startclient": "HOST=0.0.0.0 react-scripts start",
+    "startserver": "cd server;nodemon app",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

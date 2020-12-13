@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
-  XYPlot,
   XAxis,
   YAxis,
   VerticalGridLines,
