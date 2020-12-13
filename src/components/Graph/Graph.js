@@ -22,6 +22,8 @@ export default function Graph({ response, getData, setGetData }) {
   const [hoveredValue, setHoveredValue] = useState({});
   const [showHover, setShowHover] = useState(false);
 
+  const FlexibleXYPlot = makeWidthFlexible(XYPlot);
+
   const relDiff = (a, b) => {
     return 100 * Math.abs((a - b) / ((a + b) / 2));
   };
@@ -31,43 +33,22 @@ export default function Graph({ response, getData, setGetData }) {
     setGetData(!getData);
   };
 
-  const HoverTile = () => {
-    //console.log(hoveredValue.datapoint, hoveredValue.event);
-    return (
-      <div
-        style={{
-          position: "absolute",
-          top: hoveredValue.event?.event.y - 120,
-          left: hoveredValue.event?.event.x - 50,
-        }}
-        className="hoverTile"
-      >
-        {showHover && hoveredValue.datapoint?.y}
-      </div>
-    );
-  };
-
   const CurrentState = () => {
+    const difference = relDiff(currentValue.y, prevValue.y).toFixed(2);
     return (
       <>
         <div className="TLBox">
           <div className="TLCornerBox1">{currentValue.y}</div>
 
           {currentValue.y > prevValue.y ? (
-            <div className="TLCornerBoxHigh">
-              +{relDiff(currentValue.y, prevValue.y).toFixed(2)}%
-            </div>
+            <div className="TLCornerBoxHigh">+{difference}%</div>
           ) : (
-            <div className="TLCornerBoxLow">
-              -{relDiff(currentValue.y, prevValue.y).toFixed(2)}%
-            </div>
+            <div className="TLCornerBoxLow">-{difference}%</div>
           )}
         </div>
       </>
     );
   };
-  const FlexibleXYPlot = makeWidthFlexible(XYPlot);
-
   return (
     <>
       <h2>{currentValue.stockName}</h2>
@@ -122,7 +103,6 @@ export default function Graph({ response, getData, setGetData }) {
           <VerticalGridLines />
           <XAxis type="time" title="Time" />
           <YAxis title="Price (NOK)" />
-          <HoverTile />
         </FlexibleXYPlot>
       </div>
     </>
