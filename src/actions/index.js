@@ -29,5 +29,18 @@ const addToInventory = (data) => {
     payload: data,
   };
 };
+const addChart = (data) => {
+  return {
+    type: "addChart",
+    payload: data,
+  };
+};
 
-export { doLogin, doLogout, addSocketData, addToInventory, toggleSocket };
+export {
+  doLogin,
+  doLogout,
+  addSocketData,
+  addToInventory,
+  toggleSocket,
+  addChart,
+};

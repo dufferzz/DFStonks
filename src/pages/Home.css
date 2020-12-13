@@ -1,11 +1,36 @@
 .card {
-  width: 90%;
   background-color: #1f1c30;
   border: 1px solid #251f2d;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   padding: 1rem;
-  margin: 1rem auto;
-  min-height: 200px;
+  /* margin: 1rem auto; */
+  /* min-height: 200px; */
+  min-width: 28vw;
+  margin: 0.7rem;
+  max-width: 90vw;
+}
+
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .graphContainer {
+    padding: 0;
+    margin: 0;
+    width: 95%;
+  }
+  .container {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  .contentContainer {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
 }
 
 .cardImage {
@@ -13,8 +38,7 @@
   height: 200px !important;
 }
 .container {
-  align-items: center;
-  justify-content: center;
+  display: inline-flex;
   width: 95%;
   margin: auto;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
@@ -26,6 +50,19 @@
 
 .contentContainer {
   background-color: #26283d;
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: 100%;
+  /* align-items: center; */
+  justify-content: center;
+}
+.homeCards {
+  background-color: #26283d;
+  display: inline-flex;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 .image {
   float: left;

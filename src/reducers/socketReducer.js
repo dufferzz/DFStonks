@@ -37,7 +37,7 @@ const socketReducer = (
 ) => {
   switch (action.type) {
     case "addSocketData":
-      if (state.chart1.length > 50) state.chart1.shift();
+      if (state.chart1.length > 25) state.chart1.shift();
 
       return {
         ...state,

@@ -4,41 +4,29 @@ const port = process.env.PORT || 4001;
 
 const app = express();
 
-
 const server = http.createServer(app);
-const io = require('socket.io')(server, {
+const io = require("socket.io")(server, {
   cors: {
-    origin: '*',
-  }
+    origin: "*",
+  },
 });
-let interval;
-
-let interval2;
 
 io.on("connection", (socket) => {
   console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  if (interval2) {
-    clearInterval(interval2);
-  }
-  
-  interval = setInterval(() => getApiAndEmit(socket), 500); // 1 per 500ms
-  interval2 = setInterval(() => getApiAndEmit2(socket), 10000);
-  
+
+  setInterval(() => getApiAndEmit(socket), 500); // 1 per 500ms
+  setInterval(() => getApiAndEmit2(socket), 10000);
+
   socket.on("disconnect", () => {
     console.log("Client disconnected");
-    clearInterval(interval);
   });
 });
 
-const getApiAndEmit = socket => {
+const getApiAndEmit = (socket) => {
   const response = new Date();
-  const randomNumber = Math.floor(Math.random() * Math.floor(1000000))
 
   const data = {
-    stock: 'DFZ Inc',
+    stock: "DFZ Inc",
     time: response.getTime(),
     currentPrice: Math.floor(Math.random() * Math.floor(100)),
     yOpen: Math.floor(Math.random() * Math.floor(100)),
@@ -46,20 +34,17 @@ const getApiAndEmit = socket => {
     unitsSold: Math.floor(Math.random() * Math.floor(100)),
     unitsPurchased: Math.floor(Math.random() * Math.floor(100)),
     yLow: Math.floor(Math.random() * Math.floor(100)),
-    yHigh: Math.floor(Math.random() * Math.floor(100)), 
-  }
-  
+    yHigh: Math.floor(Math.random() * Math.floor(100)),
+  };
 
-  socket.emit("FromAPI", response);
   socket.emit("SocketRandom", data);
 };
 
-
-const getApiAndEmit2 = socket => {
+const getApiAndEmit2 = (socket) => {
   const response = new Date();
 
   const data = {
-    stock: 'Bitcoin Corp',
+    stock: "Bitcoin Corp",
     time: response.getTime(),
     currentPrice: Math.floor(Math.random() * Math.floor(100)),
     yOpen: Math.floor(Math.random() * Math.floor(100)),
@@ -67,9 +52,9 @@ const getApiAndEmit2 = socket => {
     unitsSold: Math.floor(Math.random() * Math.floor(100)),
     unitsPurchased: Math.floor(Math.random() * Math.floor(100)),
     yLow: Math.floor(Math.random() * Math.floor(100)),
-    yHigh: Math.floor(Math.random() * Math.floor(100)), 
-  }
-  
+    yHigh: Math.floor(Math.random() * Math.floor(100)),
+  };
+
   socket.emit("SocketRandom2", data);
 };
 
