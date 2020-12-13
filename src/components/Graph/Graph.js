@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XAxis,
@@ -14,15 +14,14 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch } from "react-redux";
 
 import { toggleSocket, addSocketData } from "../../actions";
-import socketIOClient from "socket.io-client";
 
 import calcDiff from "../../utils/calcDiff";
-
-const ENDPOINT = "http://192.168.1.47:4001";
+import SocketContext from "../../socket";
 
 export default function Graph({ data, stockName }) {
   const socketData = useSelector((state) => state.socketReducer);
   const dispatch = useDispatch();
+  const socket = useContext(SocketContext);
 
   const currentValue = data.slice(-1)[0];
   const prevValue = data.slice(-2)[0];
@@ -33,17 +32,19 @@ export default function Graph({ data, stockName }) {
   };
 
   useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
     if (socketData.isActive) {
+      console.log("socket opening");
       socket.on(stockName, (data) => {
         dispatch(addSocketData(data));
       });
     } else {
+      console.log("socket is stopping:", stockName);
+      socket.off(stockName);
       return () => {
         socket.off(stockName);
       };
     }
-  }, [socketData.isActive, dispatch, stockName]);
+  }, [socketData.isActive, dispatch, stockName, socket]);
 
   const Toggler = () => (
     <div className="ToggleGraph">

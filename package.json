@@ -21,6 +21,7 @@
     "react-vis": "^1.11.7",
     "redux": "^4.0.5",
     "socket.io-client": "^3.0.4",
+    "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
