@@ -8,15 +8,15 @@ import { getDataa, addToInventory } from "../actions";
 
 const ENDPOINT = "http://192.168.1.47:4001";
 
-const Usage = () => {
-  const socketState = useSelector((state) => state.socketReducer.arr);
+const Graphs = () => {
+  const socketData = useSelector((state) => state.socketReducer.arr);
   const inventoryState = useSelector((state) => state.inventoryReducer.arr);
 
   const dispatch = useDispatch();
 
   const [getData, setGetData] = useState(true);
 
-  const currentValue = socketState.slice(-1)[0];
+  const currentValue = socketData.slice(-1)[0];
 
   useEffect(() => {
     const socket = socketIOClient(ENDPOINT);
@@ -69,11 +69,7 @@ const Usage = () => {
     <div>
       <h1>Dr Stonks' RNG-O-Meter</h1>
       <div className="card">
-        <Graph
-          response={socketState}
-          getData={getData}
-          setGetData={setGetData}
-        />
+        <Graph data={socketData} getData={getData} setGetData={setGetData} />
         <BuyDFZStock />
         <StockInv />
       </div>
@@ -81,4 +77,4 @@ const Usage = () => {
   );
 };
 
-export default Usage;
+export default Graphs;

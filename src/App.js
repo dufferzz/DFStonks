@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Usage from "./pages/Usage";
+import Graphs from "./pages/Graphs";
 
 import "./App.css";
 import NavBar from "./components/NavBar";
@@ -30,7 +30,7 @@ function App() {
           <div className="contentContainer">
             <Switch>
               <Route exact path="/">
-                <Usage />
+                <Graphs />
               </Route>
             </Switch>
           </div>

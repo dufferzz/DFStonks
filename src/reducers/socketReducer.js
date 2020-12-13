@@ -56,4 +56,6 @@ const socketReducer = (
   }
 };
 
+// Gosh Darnit, Prettier... What did you do..
+
 export { socketReducer };

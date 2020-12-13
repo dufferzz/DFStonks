@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
-  LineMarkSeries,
-  VerticalBarSeries,
   XAxis,
   YAxis,
   VerticalGridLines,
@@ -15,16 +13,13 @@ import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-export default function Graph({ response, getData, setGetData }) {
-  const currentValue = response.slice(-1)[0];
-  const prevValue = response.slice(-2)[0];
-
-  const [hoveredValue, setHoveredValue] = useState({});
-  const [showHover, setShowHover] = useState(false);
+export default function Graph({ data, getData, setGetData }) {
+  const currentValue = data.slice(-1)[0];
+  const prevValue = data.slice(-2)[0];
 
   const FlexibleXYPlot = makeWidthFlexible(XYPlot);
 
-  const relDiff = (a, b) => {
+  const calcDiff = (a, b) => {
     return 100 * Math.abs((a - b) / ((a + b) / 2));
   };
 
@@ -34,7 +29,7 @@ export default function Graph({ response, getData, setGetData }) {
   };
 
   const CurrentState = () => {
-    const difference = relDiff(currentValue.y, prevValue.y).toFixed(2);
+    const difference = calcDiff(currentValue.y, prevValue.y).toFixed(2);
     return (
       <>
         <div className="TLBox">
@@ -72,33 +67,13 @@ export default function Graph({ response, getData, setGetData }) {
         </div>
       </div>
       <div className="graph">
-        <FlexibleXYPlot
-          animation
-          height={300}
-          xType="time"
-          onMouseEnter={() => {
-            setShowHover(true);
-            // setGetData(false);
-          }}
-          onMouseLeave={() => {
-            setShowHover(false);
-            // setGetData(true);
-          }}
-        >
+        <FlexibleXYPlot animation height={300} xType="time">
           <Candlestick
             colorType="literal"
             opacityType="literal"
             stroke="#1896FD"
-            data={response}
+            data={data}
           />
-          {/* <LineMarkSeries
-            style={{ mark: { stroke: "white" } }}
-            onNearestX={(datapoint, event) => {
-              setHoveredValue({ datapoint, event });
-            }}
-            size={2}
-            data={response}
-          /> */}
           <HorizontalGridLines />
           <VerticalGridLines />
           <XAxis type="time" title="Time" />
