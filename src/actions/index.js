@@ -10,9 +10,15 @@ const doLogout = () => {
   };
 };
 
-const getDataa = (data) => {
+const toggleSocket = () => {
   return {
-    type: "getDataa",
+    type: "toggleSocket",
+  };
+};
+
+const addSocketData = (data) => {
+  return {
+    type: "addSocketData",
     payload: data,
   };
 };
@@ -24,4 +30,4 @@ const addToInventory = (data) => {
   };
 };
 
-export { doLogin, doLogout, getDataa, addToInventory };
+export { doLogin, doLogout, addSocketData, addToInventory, toggleSocket };

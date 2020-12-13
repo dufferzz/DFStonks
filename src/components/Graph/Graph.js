@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../../node_modules/react-vis/dist/style.css";
 import {
   XYPlot,
@@ -6,27 +6,64 @@ import {
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  makeWidthFlexible,
+  FlexibleWidthXYPlot,
 } from "react-vis";
 import Candlestick from "./Candlestick";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useSelector, useDispatch } from "react-redux";
 
-export default function Graph({ data, getData, setGetData }) {
+import { toggleSocket, addSocketData } from "../../actions";
+import socketIOClient from "socket.io-client";
+
+import calcDiff from "../../utils/calcDiff";
+
+const ENDPOINT = "http://192.168.1.47:4001";
+
+export default function Graph({ data, stockName }) {
+  const socketData = useSelector((state) => state.socketReducer);
+  const dispatch = useDispatch();
+
   const currentValue = data.slice(-1)[0];
   const prevValue = data.slice(-2)[0];
 
-  const FlexibleXYPlot = makeWidthFlexible(XYPlot);
-
-  const calcDiff = (a, b) => {
-    return 100 * Math.abs((a - b) / ((a + b) / 2));
-  };
-
   const toggleGraph = () => {
     console.log("Toggling graph..");
-    setGetData(!getData);
+    dispatch(toggleSocket());
   };
+
+  useEffect(() => {
+    const socket = socketIOClient(ENDPOINT);
+    if (socketData.isActive) {
+      socket.on(stockName, (data) => {
+        dispatch(addSocketData(data));
+      });
+    } else {
+      return () => {
+        socket.off(stockName);
+      };
+    }
+  }, [socketData.isActive, dispatch, stockName]);
+
+  const Toggler = () => (
+    <div className="ToggleGraph">
+      <FormGroup row>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={socketData.isActive}
+              onChange={toggleGraph}
+              name="checkedA"
+              inputProps={{ "aria-label": "primary checkbox" }}
+              color="primary"
+            />
+          }
+          label="Live Data"
+        />
+      </FormGroup>
+    </div>
+  );
 
   const CurrentState = () => {
     const difference = calcDiff(currentValue.y, prevValue.y).toFixed(2);
@@ -49,36 +86,16 @@ export default function Graph({ data, getData, setGetData }) {
       <h2>{currentValue.stockName}</h2>
       <div className="topBar">
         <CurrentState />
-        <div className="ToggleGraph">
-          <FormGroup row>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={getData}
-                  onChange={toggleGraph}
-                  name="checkedA"
-                  inputProps={{ "aria-label": "primary checkbox" }}
-                  color="primary"
-                />
-              }
-              label="Live Data"
-            />
-          </FormGroup>
-        </div>
+        <Toggler />
       </div>
       <div className="graph">
-        <FlexibleXYPlot animation height={300} xType="time">
-          <Candlestick
-            colorType="literal"
-            opacityType="literal"
-            stroke="#1896FD"
-            data={data}
-          />
+        <FlexibleWidthXYPlot height={300} xType="time">
+          <Candlestick data={data} />
           <HorizontalGridLines />
           <VerticalGridLines />
-          <XAxis type="time" title="Time" />
+          <XAxis type="time" title="Server Time" />
           <YAxis title="Price (NOK)" />
-        </FlexibleXYPlot>
+        </FlexibleWidthXYPlot>
       </div>
     </>
   );

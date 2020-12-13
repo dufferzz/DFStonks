@@ -1,35 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Graph from "../components/Graph/Graph";
-import socketIOClient from "socket.io-client";
 import "./Home.css";
 
 import { useSelector, useDispatch } from "react-redux";
-import { getDataa, addToInventory } from "../actions";
-
-const ENDPOINT = "http://192.168.1.47:4001";
+import { addToInventory } from "../actions";
 
 const Graphs = () => {
-  const socketData = useSelector((state) => state.socketReducer.arr);
+  const socketData = useSelector((state) => state.socketReducer);
   const inventoryState = useSelector((state) => state.inventoryReducer.arr);
 
   const dispatch = useDispatch();
 
-  const [getData, setGetData] = useState(true);
-
-  const currentValue = socketData.slice(-1)[0];
-
-  useEffect(() => {
-    const socket = socketIOClient(ENDPOINT);
-    if (getData) {
-      socket.on("SocketRandom", (data) => {
-        dispatch(getDataa(data));
-      });
-    } else {
-      return () => {
-        socket.off("SocketRandom");
-      };
-    }
-  }, [getData, dispatch]);
+  const currentValue = socketData.chart1.slice(-1)[0];
 
   const StockInv = () => {
     return (
@@ -69,7 +51,8 @@ const Graphs = () => {
     <div>
       <h1>Dr Stonks' RNG-O-Meter</h1>
       <div className="card">
-        <Graph data={socketData} getData={getData} setGetData={setGetData} />
+        <Graph data={socketData.chart1} stockName="SocketRandom" />
+
         <BuyDFZStock />
         <StockInv />
       </div>
