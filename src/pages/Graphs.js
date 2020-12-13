@@ -1,6 +1,7 @@
 import React from "react";
 import Graph from "../components/Graph/Graph";
 import "./Home.css";
+import Button from "@material-ui/core/Button";
 
 import { useSelector, useDispatch } from "react-redux";
 import { addToInventory } from "../actions";
@@ -45,7 +46,16 @@ const Graphs = () => {
     dispatch(addToInventory(item));
   };
 
-  const BuyDFZStock = () => <button onClick={buyAStock}>Buy DFZ Stock</button>;
+  const BuyDFZStock = () => (
+    <Button
+      style={{ margin: 1 + "rem" }}
+      variant="outlined"
+      color="primary"
+      onClick={buyAStock}
+    >
+      Buy DFZ Stock
+    </Button>
+  );
 
   return (
     <div>

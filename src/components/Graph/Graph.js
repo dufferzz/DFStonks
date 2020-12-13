@@ -83,18 +83,25 @@ export default function Graph({ data, stockName }) {
   return (
     <>
       <h2>{currentValue.stockName}</h2>
-      <div className="topBar">
-        <CurrentState />
-        <Toggler />
-      </div>
-      <div className="graph">
-        <FlexibleWidthXYPlot height={300} xType="time">
-          <Candlestick data={data} />
-          <HorizontalGridLines />
-          <VerticalGridLines />
-          <XAxis type="time" title="Server Time" />
-          <YAxis title="Price (NOK)" />
-        </FlexibleWidthXYPlot>
+      <div className="graphContainer">
+        <div className="topBar">
+          <CurrentState />
+          <Toggler />
+        </div>
+        <div className="graph">
+          <FlexibleWidthXYPlot
+            height={300}
+            xType="time"
+            style={{ color: "rgba(255,255,255,0.2)" }}
+            color="#2a326b"
+          >
+            <Candlestick data={data} />
+            <HorizontalGridLines style={{ stroke: "rgba(255,255,255,0.2)" }} />
+            <VerticalGridLines style={{ stroke: "rgba(255,255,255,0.2)" }} />
+            <XAxis type="time" title="Server Time" />
+            <YAxis title="Price (NOK)" />
+          </FlexibleWidthXYPlot>
+        </div>
       </div>
     </>
   );

@@ -33,7 +33,7 @@ Change ENDPOINT in src/components/Graph/Graph.js
     yarn start
 ```
 
-## Start Express SockerIO Server
+## Start Express SocketIO Server
 
 ```bash
     yarn startserver
