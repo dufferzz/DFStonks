@@ -4,9 +4,17 @@ import Graphs from "./pages/Graphs";
 
 import SocketContext, { socket } from "./socket";
 
-import "./App.css";
 import NavBar from "./components/NavBar";
 import SideDrawer from "./components/SideDrawer";
+import Container from "./components/styledComponents/Container";
+import ContentContainer from "./components/styledComponents/ContentContainer";
+
+import styled from "styled-components";
+
+const AppContainer = styled.div`
+  text-align: center;
+  min-height: 100vh;
+`;
 
 function App() {
   const [drawerState, setDrawerState] = useState({
@@ -26,19 +34,19 @@ function App() {
   return (
     <SocketContext.Provider value={socket}>
       <Router>
-        <div className="App">
+        <AppContainer>
           <NavBar toggleDrawer={toggleDrawer} />
           <SideDrawer state={drawerState} toggleDrawer={toggleDrawer} />
-          <div className="container">
-            <div className="contentContainer">
+          <Container>
+            <ContentContainer>
               <Switch>
                 <Route exact path="/">
                   <Graphs />
                 </Route>
               </Switch>
-            </div>
-          </div>
-        </div>
+            </ContentContainer>
+          </Container>
+        </AppContainer>
       </Router>
     </SocketContext.Provider>
   );

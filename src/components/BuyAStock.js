@@ -3,12 +3,12 @@ import Button from "@material-ui/core/Button";
 import { addToInventory } from "../actions";
 import { useSelector, useDispatch } from "react-redux";
 
-const BuyAStock = () => {
+const BuyAStock = ({ stockName }) => {
   const socketData = useSelector((state) => state.socketReducer);
 
   const dispatch = useDispatch();
 
-  const currentValue = socketData.chart1.slice(-1)[0];
+  const currentValue = socketData[stockName]?.slice(-1)[0];
 
   const buyAStock = () => {
     const item = {
@@ -21,7 +21,7 @@ const BuyAStock = () => {
 
   return (
     <Button
-      style={{ margin: 1 + "rem" }}
+      style={{ margin: 0.5 + "rem" }}
       variant="outlined"
       color="primary"
       onClick={buyAStock}

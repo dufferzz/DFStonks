@@ -112,7 +112,7 @@ class CandlestickSeries extends AbstractSeries {
                 x={-xWidth}
                 width={Math.max(xWidth * 2, 0)}
                 y={yOpen}
-                height={Math.abs(yOpen - yClose)}
+                height={Math.abs(yOpen - yClose)} // This be why the data goes off bottom of graph. Maybe fix Socket..
                 fill={fillFunctor && fillFunctor(d)}
               />
             </g>

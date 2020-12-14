@@ -1,18 +1,17 @@
-const chartReducer = (state = [], action) => {
-  switch (action.type) {
-    case "addChart":
-      return [
-        ...state,
-        {
-          title: action.payload.title,
-          isActive: true,
-          data: action.payload.data,
-        },
-      ];
+import { createReducer } from "@reduxjs/toolkit";
+import { addChart } from "../actions";
 
-    default:
-      return state;
-  }
-};
+const initialState = [];
+
+const chartReducer = createReducer(initialState, (builder) => {
+  builder.addCase(addChart, (state, action) => {
+    const newItem = {
+      title: action.payload.title,
+      isActive: true,
+      data: action.payload.data,
+    };
+    state.push(newItem);
+  });
+});
 
 export { chartReducer };

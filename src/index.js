@@ -4,15 +4,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
 
 import combinedReducers from "./reducers";
 
-let store = createStore(
-  combinedReducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-// store.subscribe(() => console.log(store.getState()));
+const store = configureStore({
+  reducer: combinedReducers,
+});
 
 ReactDOM.render(
   <React.StrictMode>

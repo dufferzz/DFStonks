@@ -1,40 +1,12 @@
-const doLogin = () => {
-  return {
-    type: "doLogin",
-  };
-};
+import { createAction } from "@reduxjs/toolkit";
 
-const doLogout = () => {
-  return {
-    type: "doLogout",
-  };
-};
-
-const toggleSocket = () => {
-  return {
-    type: "toggleSocket",
-  };
-};
-
-const addSocketData = (data) => {
-  return {
-    type: "addSocketData",
-    payload: data,
-  };
-};
-
-const addToInventory = (data) => {
-  return {
-    type: "addToInventory",
-    payload: data,
-  };
-};
-const addChart = (data) => {
-  return {
-    type: "addChart",
-    payload: data,
-  };
-};
+const toggleSocket = createAction("toggleSocket");
+const createNew = createAction("createNew");
+const addChart = createAction("addChart");
+const addToInventory = createAction("addToInventory");
+const addSocketData = createAction("addSocketData");
+const doLogin = createAction("doLogin");
+const doLogout = createAction("doLogout");
 
 export {
   doLogin,
@@ -43,4 +15,5 @@ export {
   addToInventory,
   toggleSocket,
   addChart,
+  createNew,
 };

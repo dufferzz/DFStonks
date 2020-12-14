@@ -3,10 +3,11 @@ import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addChart } from "../actions";
+
 const AddGraph = () => {
   const dispatch = useDispatch();
   const [selectedSocket, setSelectedSocket] = useState("chart1");
-  const socketData = useSelector((state) => state.socketReducer);
+  // const socketData = useSelector((state) => state.socketReducer);
 
   return (
     <>
@@ -24,7 +25,6 @@ const AddGraph = () => {
           const titem = {
             title: selectedSocket,
             isActive: true,
-            data: socketData[selectedSocket].data,
           };
           dispatch(addChart(titem));
         }}

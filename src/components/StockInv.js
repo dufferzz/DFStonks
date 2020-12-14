@@ -1,19 +1,37 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+
+const Table = styled.table`
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  border-collapse: collapse;
+  min-height: 30vh;
+  min-width: 30vw;
+`;
+const THead = styled.thead`
+  background-color: rgba(0, 0, 0, 0.3);
+`;
 
 const StockInv = () => {
-  const inventoryState = useSelector((state) => state.inventoryReducer.arr);
+  const inventoryState = useSelector((state) => state.inventoryReducer);
 
   return (
-    <table className="tablee">
-      <thead>
+    <Table>
+      <THead>
         <tr>
           <td>Item Name</td>
           <td>Buy Price</td>
           <td>Qty</td>
         </tr>
-      </thead>
+      </THead>
       <tbody>
+        {inventoryState.length === 0 && (
+          <tr>
+            <td colSpan={3}>#NoStonks</td>
+          </tr>
+        )}
         {inventoryState.map((item, key) => (
           <tr key={key}>
             <td>{item?.stockName}</td>
@@ -22,7 +40,7 @@ const StockInv = () => {
           </tr>
         ))}
       </tbody>
-    </table>
+    </Table>
   );
 };
 

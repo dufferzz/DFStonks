@@ -8,88 +8,80 @@ import {
   FlexibleWidthXYPlot,
 } from "react-vis";
 import Candlestick from "./Candlestick";
-import Switch from "@material-ui/core/Switch";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
-import { toggleSocket, addSocketData } from "../../actions";
+import { addSocketData } from "../../actions";
 
-import calcDiff from "../../utils/calcDiff";
 import SocketContext from "../../socket";
+import TopBar from "./TopBar";
+
+const GraphPadding = styled.div`
+  padding: 0.3rem;
+  @media only screen and (max-width: 1025px) {
+    padding: 0;
+  }
+`;
+
+const GraphContainer = styled.div`
+  background-color: rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 1025px) {
+    padding: 0;
+    margin: 0;
+    width: 98%;
+  }
+`;
+
+const GraphTitle = styled.div`
+  font-size: 2rem;
+  margin: 0;
+  padding: 0;
+`;
 
 export default function Graph({ data, stockName }) {
+  const socket = useContext(SocketContext);
   const socketData = useSelector((state) => state.socketReducer);
   const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
 
-  const currentValue = data.slice(-1)[0];
-  const prevValue = data.slice(-2)[0];
-
-  const toggleGraph = () => {
-    console.log("Toggling graph..");
-    dispatch(toggleSocket());
+  let currentValue = {
+    stockName,
+    y: null,
+    x: null,
   };
 
+  let prevValue = currentValue;
+
+  if (socketData.chart1) {
+    // console.log(socketData.chart1);
+
+    currentValue = socketData.chart1.slice(-1)[0];
+    prevValue = socketData.chart1.slice(-2)[0];
+  }
   useEffect(() => {
-    if (socketData.isActive) {
-      console.log("socket opening");
+    const openSocket = () => {
+      console.log("socket opening:", stockName);
       socket.on(stockName, (data) => {
         dispatch(addSocketData(data));
       });
-    } else {
+    };
+
+    const stopSocket = () => {
       console.log("socket is stopping:", stockName);
       socket.off(stockName);
-      return () => {
-        socket.off(stockName);
-      };
-    }
+    };
+    openSocket();
+    return () => {
+      stopSocket();
+    };
   }, [socketData.isActive, dispatch, stockName, socket]);
 
-  const Toggler = () => (
-    <div className="ToggleGraph">
-      <FormGroup row>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={socketData.isActive}
-              onChange={toggleGraph}
-              name="checkedA"
-              inputProps={{ "aria-label": "primary checkbox" }}
-              color="primary"
-            />
-          }
-          label="Live Data"
-        />
-      </FormGroup>
-    </div>
-  );
-
-  const CurrentState = () => {
-    const difference = calcDiff(currentValue.y, prevValue.y).toFixed(2);
-    return (
-      <>
-        <div className="TLBox">
-          <div className="TLCornerBox1">{currentValue.y}</div>
-
-          {currentValue.y > prevValue.y ? (
-            <div className="TLCornerBoxHigh">+{difference}%</div>
-          ) : (
-            <div className="TLCornerBoxLow">-{difference}%</div>
-          )}
-        </div>
-      </>
-    );
-  };
   return (
-    <>
-      <h2>{currentValue.stockName}</h2>
-      <div className="graphContainer">
-        <div className="topBar">
-          <CurrentState />
-          <Toggler />
-        </div>
-        <div className="graph">
+    <div>
+      <GraphTitle>{currentValue?.stockName}</GraphTitle>
+      <GraphContainer>
+        <TopBar currentValue={currentValue} prevValue={prevValue} />
+        <GraphPadding>
           <FlexibleWidthXYPlot
             height={300}
             xType="time"
@@ -102,8 +94,8 @@ export default function Graph({ data, stockName }) {
             <XAxis type="time" title="Server Time" />
             <YAxis title="Price (NOK)" />
           </FlexibleWidthXYPlot>
-        </div>
-      </div>
-    </>
+        </GraphPadding>
+      </GraphContainer>
+    </div>
   );
 }

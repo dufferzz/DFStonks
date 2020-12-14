@@ -1,19 +1,17 @@
-const inventoryReducer = (state = { arr: [] }, action) => {
-  switch (action.type) {
-    case "addToInventory":
-      const newItem = {
-        stockName: action.payload.stockName,
-        price: action.payload.price,
-        qty: action.payload.qty,
-      };
-      return {
-        ...state,
-        arr: [...state.arr, newItem],
-      };
+import { createReducer } from "@reduxjs/toolkit";
+import { addToInventory } from "../actions";
 
-    default:
-      return state;
-  }
-};
+const initialState = [];
+
+const inventoryReducer = createReducer(initialState, (builder) => {
+  builder.addCase(addToInventory, (state, action) => {
+    const newItem = {
+      stockName: action.payload.stockName,
+      price: action.payload.price,
+      qty: action.payload.qty,
+    };
+    state.push(newItem);
+  });
+});
 
 export { inventoryReducer };
