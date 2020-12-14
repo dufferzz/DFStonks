@@ -1,37 +1,59 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { addSocketData, toggleSocket } from "../actions";
-const currentDate = new Date();
+import { addSocketData, toggleSocket, addChart } from "../actions";
 
-const initialState = {
-  isActive: true,
-  chart1: [
-    {
-      x: currentDate.getTime(),
-      y: 0,
-      stockName: "",
-      yLow: 0,
-      yHigh: 0,
-      yOpen: 0,
-      yClose: 0,
-    },
-  ],
-};
+// Sweet mother of no destructuring.. I will change the server to spit out better data later :)
 
-const socketReducer = createReducer(initialState, (builder) => {
-  builder.addCase(addSocketData, (state, action) => {
-    state.chart1.push({
-      x: action.payload.time,
-      y: action.payload.currentPrice,
-      stockName: action.payload.stock,
-      unitsPurchased: action.payload.unitsPurchased,
-      unitsSold: action.payload.unitsSold,
-      yLow: action.payload.yLow,
-      yHigh: action.payload.yHigh,
-      yOpen: action.payload.yOpen,
-      yClose: action.payload.yClose,
-    });
-    if (state.chart1.length > 25) state.chart1.shift();
+const socketReducer = createReducer([], (builder) => {
+  builder.addCase(addChart, (state, action) => {
+    const newItem = {
+      stockName: action.payload.title,
+      isActive: true,
+      dataLimit: 25,
+      display: "candlestick",
+      data: [],
+    };
+    state.push(newItem);
   });
+
+  builder.addCase(addSocketData, (state, action) => {
+    const sock = state[action.payload.index];
+
+    if (state[action.payload.index]) {
+      sock.data.push({
+        x: action.payload.data.time,
+        y: action.payload.data.currentPrice,
+        stockName: action.payload.data.stock,
+        unitsPurchased: action.payload.data.unitsPurchased,
+        unitsSold: action.payload.data.unitsSold,
+        yLow: action.payload.data.yLow,
+        yHigh: action.payload.data.yHigh,
+        yOpen: action.payload.data.yOpen,
+        yClose: action.payload.data.yClose,
+      });
+      if (sock.data.length > sock.dataLimit) sock.data.shift();
+    } else {
+      state.push({
+        stockName: action.payload.data.stock,
+        isActive: true,
+        dataLimit: 25,
+        display: "candlestick",
+        data: [
+          {
+            x: action.payload.data.time,
+            y: action.payload.data.currentPrice,
+            stockName: action.payload.data.stock,
+            unitsPurchased: action.payload.data.unitsPurchased,
+            unitsSold: action.payload.data.unitsSold,
+            yLow: action.payload.data.yLow,
+            yHigh: action.payload.data.yHigh,
+            yOpen: action.payload.data.yOpen,
+            yClose: action.payload.data.yClose,
+          },
+        ],
+      });
+    }
+  });
+
   builder.addCase(toggleSocket, (state, action) => {
     state.isActive = !state.isActive;
   });

@@ -26,7 +26,7 @@ const BuyAStock = ({ stockName }) => {
       color="primary"
       onClick={buyAStock}
     >
-      Buy DFZ Stock
+      Buy {stockName} Stock
     </Button>
   );
 };

@@ -1,15 +1,13 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Graph from "../components/Graph/Graph";
+import styled from "styled-components";
 
+import Graph from "../components/Graph/Graph";
 import AddGraph from "../components/AddGraph";
 import BuyAStock from "../components/BuyAStock";
 import StockInv from "../components/StockInv";
 
-import styled from "styled-components";
-
 import Card from "../components/styledComponents/Card";
-import GraphCard from "../components/styledComponents/GraphCard";
 
 const GraphCards = styled.div`
   display: grid;
@@ -27,6 +25,19 @@ const GraphCards = styled.div`
   }
 `;
 
+const GraphCard = styled.div`
+  background-color: #1f1c30;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  padding: 0 1rem 1rem 1rem;
+  min-width: 28vw;
+  max-width: 90vw;
+
+  @media (max-width: 1025px) {
+    width: 90vw;
+  }
+`;
+
 const Graphs = () => {
   const socketData = useSelector((state) => state.socketReducer);
   const chartData = useSelector((state) => state.chartReducer);
@@ -38,10 +49,11 @@ const Graphs = () => {
       <Card>
         <AddGraph />
       </Card>
+
       <GraphCards>
-        {chartData.map((item, key) => (
+        {socketData.map((item, key) => (
           <GraphCard key={key}>
-            <Graph data={socketData[item.title]} stockName="SocketRandom" />
+            <Graph index={key} data={item.data} stockName={item.stockName} />
             <BuyAStock stockName={item.title} />
           </GraphCard>
         ))}

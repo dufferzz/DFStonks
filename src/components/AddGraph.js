@@ -3,11 +3,10 @@ import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addChart } from "../actions";
-
 const AddGraph = () => {
   const dispatch = useDispatch();
-  const [selectedSocket, setSelectedSocket] = useState("chart1");
-  // const socketData = useSelector((state) => state.socketReducer);
+  const [selectedSocket, setSelectedSocket] = useState("SocketRandom");
+  const socketData = useSelector((state) => state.socketReducer);
 
   return (
     <>
@@ -17,8 +16,8 @@ const AddGraph = () => {
           setSelectedSocket(e.target.value);
         }}
       >
-        <option value="chart1">SocketRandom</option>
-        <option value="chart2">SocketRandom2</option>
+        <option value="SocketRandom">SocketRandom</option>
+        <option value="SocketRandom2">SocketRandom2</option>
       </select>
       <button
         onClick={() => {

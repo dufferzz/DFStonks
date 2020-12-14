@@ -39,7 +39,7 @@ const GraphTitle = styled.div`
   padding: 0;
 `;
 
-export default function Graph({ data, stockName }) {
+export default function Graph({ index, data, stockName }) {
   const socket = useContext(SocketContext);
   const socketData = useSelector((state) => state.socketReducer);
   const dispatch = useDispatch();
@@ -52,29 +52,24 @@ export default function Graph({ data, stockName }) {
 
   let prevValue = currentValue;
 
-  if (socketData.chart1) {
+  if (socketData[index].data.length >= 2) {
     // console.log(socketData.chart1);
 
-    currentValue = socketData.chart1.slice(-1)[0];
-    prevValue = socketData.chart1.slice(-2)[0];
+    currentValue = socketData[index].data.slice(-1)[0];
+    prevValue = socketData[index].data.slice(-2)[0];
   }
   useEffect(() => {
-    const openSocket = () => {
-      console.log("socket opening:", stockName);
-      socket.on(stockName, (data) => {
-        dispatch(addSocketData(data));
-      });
-    };
+    console.log("socket opening:", stockName);
+    socket.on(stockName, (data) => {
+      const x = { data: data, index: index };
+      dispatch(addSocketData(x));
+    });
 
-    const stopSocket = () => {
+    return () => {
       console.log("socket is stopping:", stockName);
       socket.off(stockName);
     };
-    openSocket();
-    return () => {
-      stopSocket();
-    };
-  }, [socketData.isActive, dispatch, stockName, socket]);
+  }, [socketData.isActive, dispatch, stockName, socket, index]);
 
   return (
     <div>
