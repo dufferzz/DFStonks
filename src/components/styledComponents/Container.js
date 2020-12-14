@@ -6,7 +6,7 @@ const Container = styled.div`
   margin: auto;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
   border: 1px solid #251f2d;
-  min-height: 95vh;
+  min-height: 100vh;
   background-color: #26283d;
   color: #a4a3ad;
 

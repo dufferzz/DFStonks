@@ -54,14 +54,14 @@ const ToggleGraph = styled.div`
   display: inline-block;
 `;
 
-const TopBar = ({ currentValue, prevValue }) => {
+const TopBar = ({ index, currentValue, prevValue }) => {
   const socketData = useSelector((state) => state.socketReducer);
 
   const dispatch = useDispatch();
 
   const toggleGraph = () => {
     console.log("Toggling graph..");
-    dispatch(toggleSocket());
+    dispatch(toggleSocket(index));
   };
 
   const Toggler = () => (
@@ -70,7 +70,7 @@ const TopBar = ({ currentValue, prevValue }) => {
         <FormControlLabel
           control={
             <Switch
-              checked={socketData.isActive}
+              checked={socketData[index].isActive}
               onChange={toggleGraph}
               name="checkedA"
               inputProps={{ "aria-label": "primary checkbox" }}

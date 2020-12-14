@@ -2,9 +2,9 @@
 
 ![StonkShot](chrome-capture.gif?raw=true "Stonks Screenshot")
 
-POC Mostly.. very badly implemented, RNG Based. No data makes sense asides from Time
+POC Mostly.. RNG Based. No data makes sense asides from Time
 
-The CSS is terrible. Currently experimenting with styled-components and CSS Grid..
+Needs a lot of 'tidying'
 
 Dark theme is mandatory.
 
@@ -13,12 +13,10 @@ There are a lot more "features" I may or may not add. I may even fix things? Who
 Potential Todos:
 
 - Better random data - make yLow, yHigh, yOpen, yClose related
-- Fix dynamically added charts - only half(ish) working
-- Finish moving state to Redux
 - Add Express Endpoints to list all Socket Endpoints .. or on connect & update broadcast?
-- Improve the CSS & candlesticks. Maybe migrate everything to styled-components
 - Cron job / node-Scheduler to add prev values to database for default state init
-- Dropdown menu to change display options
+- Dropdown menu to change display options on graphs
+- Seperate page to list transaction history (saved via localstorage for now)
 
 Client runs on :3000
 

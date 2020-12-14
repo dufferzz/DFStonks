@@ -11,6 +11,13 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
+  header: {
+    color: "#a4a3ad",
+    fontSize: "1.5rem",
+    fontWeight: "bold",
+    textAlign: "center",
+    // width: "100%",
+  },
 }));
 export default function NavBar({ toggleDrawer }) {
   const classes = useStyles();
@@ -21,12 +28,13 @@ export default function NavBar({ toggleDrawer }) {
         <IconButton
           edge="start"
           className={classes.menuButton}
-          color="inherit"
+          color="primary"
           aria-label="open drawer"
           onClick={toggleDrawer("left", true)}
         >
           <MenuIcon />
         </IconButton>
+        <div className={classes.header}>Dr Stonks' RNG-O-Meter</div>
       </Toolbar>
     </AppBar>
   );

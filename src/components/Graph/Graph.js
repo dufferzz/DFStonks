@@ -15,7 +15,6 @@ import { addSocketData } from "../../actions";
 
 import SocketContext from "../../socket";
 import TopBar from "./TopBar";
-
 const GraphPadding = styled.div`
   padding: 0.3rem;
   @media only screen and (max-width: 1025px) {
@@ -53,16 +52,14 @@ export default function Graph({ index, data, stockName }) {
   let prevValue = currentValue;
 
   if (socketData[index].data.length >= 2) {
-    // console.log(socketData.chart1);
-
     currentValue = socketData[index].data.slice(-1)[0];
     prevValue = socketData[index].data.slice(-2)[0];
   }
+
   useEffect(() => {
     console.log("socket opening:", stockName);
     socket.on(stockName, (data) => {
-      const x = { data: data, index: index };
-      dispatch(addSocketData(x));
+      dispatch(addSocketData({ data, index }));
     });
 
     return () => {
@@ -75,7 +72,11 @@ export default function Graph({ index, data, stockName }) {
     <div>
       <GraphTitle>{currentValue?.stockName}</GraphTitle>
       <GraphContainer>
-        <TopBar currentValue={currentValue} prevValue={prevValue} />
+        <TopBar
+          index={index}
+          currentValue={currentValue}
+          prevValue={prevValue}
+        />
         <GraphPadding>
           <FlexibleWidthXYPlot
             height={300}

@@ -55,7 +55,9 @@ const socketReducer = createReducer([], (builder) => {
   });
 
   builder.addCase(toggleSocket, (state, action) => {
-    state.isActive = !state.isActive;
+    const sock = state[action.payload];
+
+    sock.isActive = !sock.isActive;
   });
 });
 

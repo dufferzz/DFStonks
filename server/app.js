@@ -15,7 +15,7 @@ io.on("connection", (socket) => {
   console.log("New client connected");
 
   setInterval(() => getApiAndEmit(socket), 500); // 1 per 500ms
-  setInterval(() => getApiAndEmit2(socket), 10000);
+  setInterval(() => getApiAndEmit2(socket), 1000);
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");

@@ -15,7 +15,6 @@ const GraphCards = styled.div`
   // grid-template-columns: auto;
   grid-gap: 1rem;
   grid-template-rows: auto;
-  margin: 1rem;
 
   @media (max-width: 1025px) {
     grid-template-columns: 1fr;
@@ -44,9 +43,14 @@ const Graphs = () => {
 
   return (
     <div>
-      <h1>Dr Stonks' RNG-O-Meter</h1>
-
-      <Card>
+      <Card
+        style={{
+          width: "fit-content",
+          margin: "auto",
+          marginBottom: 1 + "rem",
+          padding: 0.5 + "rem",
+        }}
+      >
         <AddGraph />
       </Card>
 
@@ -54,7 +58,7 @@ const Graphs = () => {
         {socketData.map((item, key) => (
           <GraphCard key={key}>
             <Graph index={key} data={item.data} stockName={item.stockName} />
-            <BuyAStock stockName={item.title} />
+            <BuyAStock index={key} />
           </GraphCard>
         ))}
 
