@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,9 +8,10 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,7 +28,19 @@ const AddGraph = () => {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const [selectedSocket, setSelectedSocket] = useState("SocketRandom");
+  const [selectedSocket, setSelectedSocket] = useState("none");
+  const [availSockets, setAvailSockets] = useState([]);
+
+  const getSockets = () => {
+    axios.get(`http://localhost:4001`).then((res) => {
+      console.log(res.data);
+      setAvailSockets(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getSockets();
+  }, []);
 
   return (
     <>
@@ -45,12 +58,26 @@ const AddGraph = () => {
           }}
           label="Socket"
         >
-          <MenuItem className={classes.label} value={"SocketRandom"}>
-            DFZ Inc
+          <MenuItem className={classes.label} value="none">
+            Not Selected
           </MenuItem>
-          <MenuItem className={classes.label} value={"SocketRandom2"}>
-            Bitcoin Corp
-          </MenuItem>
+
+          {availSockets.length === 0 && (
+            <MenuItem className={classes.label} value="none">
+              None Availabe
+            </MenuItem>
+          )}
+
+          {availSockets.length > 0 &&
+            availSockets.map((socket, key) => (
+              <MenuItem
+                key={key}
+                className={classes.label}
+                value={socket.socketName}
+              >
+                {socket.socketName}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
 
