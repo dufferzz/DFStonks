@@ -13,7 +13,6 @@ There are a lot more "features" I may or may not add. I may even fix things? Who
 Potential Todos:
 
 - Better random data - make yLow, yHigh, yOpen, yClose related
-- Add Express Endpoints to list all Socket Endpoints .. updates on broadcast?
 - Dropdown menu to change display options on graphs
 - Toggleable Graph types
 - Seperate page to list transaction history (saved via localstorage for now)
