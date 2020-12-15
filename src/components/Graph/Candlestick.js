@@ -21,14 +21,13 @@
 // Shameless Copypasta with some modifications
 
 import React from "react";
-import d3 from "d3";
 import { AbstractSeries } from "react-vis";
 const predefinedClassName =
   "rv-xy-plot__series rv-xy-plot__series--candlestick";
 
 class CandlestickSeries extends AbstractSeries {
   render() {
-    const { prevValue, className, data, marginLeft, marginTop } = this.props;
+    const { className, data, marginLeft, marginTop } = this.props;
 
     // render nothing if no data exists
     if (!data) {

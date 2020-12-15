@@ -6,6 +6,7 @@ import Graph from "../components/Graph/Graph";
 import AddGraph from "../components/AddGraph";
 import BuyAStock from "../components/BuyAStock";
 import StockInv from "../components/StockInv";
+import AddSocket from "../components/AddSocket";
 
 import Card from "../components/styledComponents/Card";
 
@@ -41,10 +42,10 @@ const GraphCard = styled.div`
 
 const Graphs = () => {
   const socketData = useSelector((state) => state.socketReducer);
-  const chartData = useSelector((state) => state.chartReducer);
 
   return (
     <div>
+      <AddSocket />
       <Card
         style={{
           width: "fit-content",

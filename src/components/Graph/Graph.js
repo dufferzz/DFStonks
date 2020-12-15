@@ -58,7 +58,7 @@ export default function Graph({ index, data, stockName }) {
   }
 
   useEffect(() => {
-    console.log("socket opening:", stockName);
+    console.log("socket opening:", stockName, index);
     socket.on(stockName, (data) => {
       dispatch(addSocketData({ data, index }));
     });
@@ -90,7 +90,7 @@ export default function Graph({ index, data, stockName }) {
             opacity="0.7"
             fill="rgba(0,150,150,0.7)"
           >
-            <Candlestick prevValue={prevValue} data={data} />
+            <Candlestick data={data} />
             <HorizontalGridLines style={{ stroke: "rgba(255,255,255,0.1)" }} />
             <VerticalGridLines style={{ stroke: "rgba(255,255,255,0.1)" }} />
             <XAxis

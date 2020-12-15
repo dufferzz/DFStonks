@@ -37,41 +37,50 @@ const generateRandomData = (name, interval) => {
   };
 };
 
-const Sockets = [
-  { socketName: "DFZ Incorporated", interval: 500 },
-  { socketName: "Bitcoin Corporation", interval: 1000 },
+const openSockets = [
+  { socketName: "DFZ Incorporated", interval: 1000 },
+  { socketName: "Bitcoin Corporation", interval: 2500 },
 ];
 
 app.get("/", (req, res, next) => {
-  res.send(JSON.stringify(Sockets));
+  res.send(JSON.stringify(openSockets));
 });
 
 app.post("/create", (req, res, next) => {
   if (!req.body) res.send("No Body m8");
   if (req.body.socketName && req.body.interval) {
     const { socketName, interval } = req.body;
-    console.log(socketName, interval);
-    Sockets.push({ socketName, interval });
+    openSockets.push({ socketName, interval });
     console.log("added socket", socketName, "with duration:", interval);
+  } else {
+    console.log(req.body);
+    res.send("no");
   }
-
-  res.send(JSON.stringify(Sockets));
 });
 
-const sendSocketData = (socket, data) => {
-  const payload = generateRandomData(data.socketName, data.interval);
-  socket.emit(data.socketName, payload);
+const sendSocketData = (s, d) => {
+  const p = generateRandomData(d.socketName, d.interval);
+  s.emit(d.socketName, p);
 };
 
 io.on("connection", (socket) => {
   console.log("New client connected");
 
-  for (let i = 0; i < Sockets.length; i++) {
-    setInterval(() => sendSocketData(socket, Sockets[i]), Sockets[i].interval); // 1 per 500ms
-  }
+  openSockets.map((sock) => {
+    return setInterval(() => sendSocketData(socket, sock), sock.interval);
+  });
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
+  });
+
+  socket.on("createSocket", () => {
+    console.log("Handling createSocket request");
+    socket.emit("getNewSocketList", JSON.stringify(openSockets));
+  });
+
+  socket.on("error", (error) => {
+    console.log(error);
   });
 });
 

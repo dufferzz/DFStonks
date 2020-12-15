@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 import axios from "axios";
+import SocketContext from "../socket";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -25,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddGraph = () => {
+  const socket = useContext(SocketContext);
+
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -40,13 +43,16 @@ const AddGraph = () => {
 
   useEffect(() => {
     getSockets();
-  }, []);
+    socket.on("getNewSocketList", (list) => {
+      console.log(list);
+    });
+  }, [socket]);
 
   return (
     <>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel className={classes.label} id="selSocketLabel">
-          Socket
+          Available Sockets
         </InputLabel>
         <Select
           className={classes.label}
@@ -81,22 +87,42 @@ const AddGraph = () => {
         </Select>
       </FormControl>
 
-      <Button
-        style={{ margin: 0.5 + "rem", padding: 0.9 + "rem" }}
-        variant="outlined"
-        color="primary"
-        size="large"
-        onClick={() => {
-          dispatch(
-            addChart({
-              title: selectedSocket,
-              isActive: true,
-            })
-          );
-        }}
-      >
-        Add Chart
-      </Button>
+      {selectedSocket === "none" ? (
+        <Button
+          disabled
+          style={{ margin: 0.5 + "rem", padding: 0.9 + "rem" }}
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => {
+            dispatch(
+              addChart({
+                title: selectedSocket,
+                isActive: true,
+              })
+            );
+          }}
+        >
+          Add Chart
+        </Button>
+      ) : (
+        <Button
+          style={{ margin: 0.5 + "rem", padding: 0.9 + "rem" }}
+          variant="outlined"
+          color="primary"
+          size="large"
+          onClick={() => {
+            dispatch(
+              addChart({
+                title: selectedSocket,
+                isActive: true,
+              })
+            );
+          }}
+        >
+          Add Chart
+        </Button>
+      )}
     </>
   );
 };
