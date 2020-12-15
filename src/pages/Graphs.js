@@ -19,21 +19,23 @@ const GraphCards = styled.div`
   @media (max-width: 1025px) {
     grid-template-columns: 1fr;
     // grid-template-columns: auto;
-    grid-gap: 1rem;
+    grid-gap: 0.5rem;
     grid-template-rows: auto;
   }
 `;
 
 const GraphCard = styled.div`
   background-color: #1f1c30;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  // border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
   padding: 0 1rem 1rem 1rem;
   min-width: 28vw;
   max-width: 90vw;
 
   @media (max-width: 1025px) {
-    width: 90vw;
+    width: 98vw;
+    padding: 0;
   }
 `;
 

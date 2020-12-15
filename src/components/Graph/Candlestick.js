@@ -18,10 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Shameless CopyPasta
+// Shameless Copypasta with some modifications
 
 import React from "react";
-// import "./styles.css";
 import d3 from "d3";
 import { AbstractSeries } from "react-vis";
 const predefinedClassName =
@@ -29,7 +28,7 @@ const predefinedClassName =
 
 class CandlestickSeries extends AbstractSeries {
   render() {
-    const { className, data, marginLeft, marginTop } = this.props;
+    const { prevValue, className, data, marginLeft, marginTop } = this.props;
 
     // render nothing if no data exists
     if (!data) {
@@ -38,6 +37,8 @@ class CandlestickSeries extends AbstractSeries {
 
     const xFunctor = this._getAttributeFunctor("x");
     const yFunctor = this._getAttributeFunctor("y");
+
+    // Get our styling options
     const strokeFunctor =
       this._getAttributeFunctor("stroke") || this._getAttributeFunctor("color");
     const fillFunctor =
@@ -93,28 +94,42 @@ class CandlestickSeries extends AbstractSeries {
               onMouseOver={(e) => this._valueMouseOverHandler(d, e)}
               onMouseOut={(e) => this._valueMouseOutHandler(d, e)}
             >
+              {/* Top Line */}
               <line
-                x1={-xWidth}
-                x2={xWidth}
+                x1={-xWidth - 5}
+                x2={xWidth + 5}
                 y1={yHigh}
                 y2={yHigh}
                 {...lineAttrs}
               />
+              {/* Center Line */}
               <line x1={0} x2={0} y1={yHigh} y2={yLow} {...lineAttrs} />
+              {/* Bottom Line */}
               <line
-                x1={-xWidth}
-                x2={xWidth}
+                x1={-xWidth - 5}
+                x2={xWidth + 5}
                 y1={yLow}
                 y2={yLow}
                 {...lineAttrs}
               />
-              <rect
-                x={-xWidth}
-                width={Math.max(xWidth * 2, 0)}
-                y={yOpen}
-                height={Math.abs(yOpen - yClose)} // This be why the data goes off bottom of graph. Maybe fix Socket..
-                fill={fillFunctor && fillFunctor(d)}
-              />
+              {/* Bars */}
+              {data[i].yHigh > d.yLow ? (
+                <rect
+                  x={-xWidth}
+                  width={Math.max(xWidth * 2, 0)}
+                  y={yOpen}
+                  height={Math.abs(yOpen - yClose)} // This be why the data goes off bottom of graph. Maybe fix Socket..
+                  fill={fillFunctor && fillFunctor(d)}
+                />
+              ) : (
+                <rect
+                  x={-xWidth}
+                  width={Math.max(xWidth * 2, 0)}
+                  y={yOpen}
+                  height={Math.abs(yOpen - yClose)} // This be why the data goes off bottom of graph. Maybe fix Socket..
+                  fill={"rgba(40,48,104,0.9)"}
+                />
+              )}
             </g>
           );
         })}

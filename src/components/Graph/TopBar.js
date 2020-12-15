@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleSocket } from "../../actions";
+import { toggleSocket, addSocketData } from "../../actions";
 import calcDiff from "../../utils/calcDiff";
 
+import SocketContext from "../../socket";
 import styled from "styled-components";
 
 const TLBox = styled.div`
@@ -54,17 +55,27 @@ const ToggleGraph = styled.div`
   display: inline-block;
 `;
 
-const TopBar = ({ index, currentValue, prevValue }) => {
+const Toggler = ({ index, stockName }) => {
   const socketData = useSelector((state) => state.socketReducer);
+  const socket = useContext(SocketContext);
 
   const dispatch = useDispatch();
 
   const toggleGraph = () => {
     console.log("Toggling graph..");
+    if (socketData[index].isActive) {
+      console.log("closing", stockName);
+      socket.off(stockName);
+    } else {
+      socket.on(stockName, (data) => {
+        dispatch(addSocketData({ data, index }));
+      });
+      console.log("opening", stockName);
+    }
     dispatch(toggleSocket(index));
   };
 
-  const Toggler = () => (
+  return (
     <ToggleGraph>
       <FormGroup row>
         <FormControlLabel
@@ -82,7 +93,9 @@ const TopBar = ({ index, currentValue, prevValue }) => {
       </FormGroup>
     </ToggleGraph>
   );
+};
 
+const TopBar = ({ index, currentValue, prevValue, stockName }) => {
   const CurrentState = () => {
     const difference = calcDiff(currentValue.y, prevValue.y).toFixed(2);
     return (
@@ -102,7 +115,7 @@ const TopBar = ({ index, currentValue, prevValue }) => {
 
   return (
     <GraphTopBar>
-      <Toggler />
+      <Toggler index={index} stockName={stockName} />
       <CurrentState />
     </GraphTopBar>
   );

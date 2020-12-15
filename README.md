@@ -13,10 +13,13 @@ There are a lot more "features" I may or may not add. I may even fix things? Who
 Potential Todos:
 
 - Better random data - make yLow, yHigh, yOpen, yClose related
-- Add Express Endpoints to list all Socket Endpoints .. or on connect & update broadcast?
-- Cron job / node-Scheduler to add prev values to database for default state init
+- Add Express Endpoints to list all Socket Endpoints .. updates on broadcast?
 - Dropdown menu to change display options on graphs
+- Toggleable Graph types
 - Seperate page to list transaction history (saved via localstorage for now)
+- Error boundaties
+- Fix duplicate socket connections when 2 same graphs are open
+- Move ENDPOINT variable to a one-time modal which saves to localStorage
 
 Client runs on :3000
 

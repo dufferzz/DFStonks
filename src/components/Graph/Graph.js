@@ -28,7 +28,7 @@ const GraphContainer = styled.div`
   @media (max-width: 1025px) {
     padding: 0;
     margin: 0;
-    width: 98%;
+    width: 100%;
   }
 `;
 
@@ -47,6 +47,7 @@ export default function Graph({ index, data, stockName }) {
     stockName,
     y: null,
     x: null,
+    isActive: true,
   };
 
   let prevValue = currentValue;
@@ -62,11 +63,15 @@ export default function Graph({ index, data, stockName }) {
       dispatch(addSocketData({ data, index }));
     });
 
-    return () => {
+    const stopSocket = () => {
       console.log("socket is stopping:", stockName);
       socket.off(stockName);
     };
-  }, [socketData.isActive, dispatch, stockName, socket, index]);
+
+    return () => {
+      stopSocket(stockName);
+    };
+  }, [dispatch, stockName, socket, index]);
 
   return (
     <div>
@@ -76,19 +81,27 @@ export default function Graph({ index, data, stockName }) {
           index={index}
           currentValue={currentValue}
           prevValue={prevValue}
+          stockName={stockName}
         />
         <GraphPadding>
           <FlexibleWidthXYPlot
             height={300}
             xType="time"
-            style={{ color: "rgba(255,255,255,0.2)" }}
-            color="#2a326b"
+            opacity="0.7"
+            fill="rgba(0,150,150,0.7)"
           >
-            <Candlestick data={data} />
-            <HorizontalGridLines style={{ stroke: "rgba(255,255,255,0.2)" }} />
-            <VerticalGridLines style={{ stroke: "rgba(255,255,255,0.2)" }} />
-            <XAxis type="time" title="Server Time" />
-            <YAxis title="Price (NOK)" />
+            <Candlestick prevValue={prevValue} data={data} />
+            <HorizontalGridLines style={{ stroke: "rgba(255,255,255,0.1)" }} />
+            <VerticalGridLines style={{ stroke: "rgba(255,255,255,0.1)" }} />
+            <XAxis
+              style={{ stroke: "rgba(255,255,255,0.2)" }}
+              type="time"
+              title="Server Time"
+            />
+            <YAxis
+              style={{ stroke: "rgba(255,255,255,0.2)" }}
+              title="Price (NOK)"
+            />
           </FlexibleWidthXYPlot>
         </GraphPadding>
       </GraphContainer>
