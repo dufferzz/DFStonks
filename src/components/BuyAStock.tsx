@@ -2,9 +2,11 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { addToInventory } from "../actions";
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../reducers";
 
-const BuyAStock = ({ index }) => {
-  const socketData = useSelector((state) => state.socketReducer);
+const BuyAStock = (props: { index: number }) => {
+  const { index } = props;
+  const socketData = useSelector((state: RootState) => state.socketReducer);
 
   const dispatch = useDispatch();
 

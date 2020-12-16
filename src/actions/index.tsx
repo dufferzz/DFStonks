@@ -1,10 +1,10 @@
 import { createAction } from "@reduxjs/toolkit";
 
-const toggleSocket = createAction("toggleSocket");
+const toggleSocket = createAction<any>("toggleSocket");
 const createNew = createAction("createNew");
-const addChart = createAction("addChart");
-const addToInventory = createAction("addToInventory");
-const addSocketData = createAction("addSocketData");
+const addChart = createAction<any>("addChart");
+const addToInventory = createAction<any>("addToInventory");
+const addSocketData = createAction<any>("addSocketData");
 const doLogin = createAction("doLogin");
 const doLogout = createAction("doLogout");
 

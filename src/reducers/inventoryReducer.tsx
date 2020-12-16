@@ -1,15 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { addToInventory } from "../actions";
 
-const initialState = [];
+//vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+const initialState: any[] = [];
 
 const inventoryReducer = createReducer(initialState, (builder) => {
   builder.addCase(addToInventory, (state, action) => {
-    const newItem = {
-      stockName: action.payload.stockName,
-      price: action.payload.price,
-      qty: action.payload.qty,
-    };
+    let newItem;
+    if (typeof action.payload !== "undefined") {
+      newItem = {
+        stockName: action.payload.stockName,
+        price: action.payload.price,
+        qty: action.payload.qty,
+      };
+    }
     state.push(newItem);
   });
 });

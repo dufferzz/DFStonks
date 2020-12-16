@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -11,13 +11,12 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
-import axios from "axios";
-import SocketContext from "../socket";
+import axios, { AxiosResponse } from "axios";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 200,
     color: "white",
   },
   label: {
@@ -26,27 +25,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AddGraph = () => {
-  const socket = useContext(SocketContext);
-
   const classes = useStyles();
 
   const dispatch = useDispatch();
   const [selectedSocket, setSelectedSocket] = useState("none");
   const [availSockets, setAvailSockets] = useState([]);
 
-  const getSockets = () => {
-    axios.get(`http://localhost:4001`).then((res) => {
-      console.log(res.data);
+  const getSockets = async () => {
+    axios.get(`http://192.168.1.47:4001`).then((res: AxiosResponse) => {
       setAvailSockets(res.data);
     });
   };
 
   useEffect(() => {
     getSockets();
-    socket.on("getNewSocketList", (list) => {
-      console.log(list);
-    });
-  }, [socket]);
+  }, []);
 
   return (
     <>
@@ -59,7 +52,7 @@ const AddGraph = () => {
           labelId="selSocketLabel"
           id="selSocketSelect"
           value={selectedSocket}
-          onChange={(e) => {
+          onChange={(e: any) => {
             setSelectedSocket(e.target.value);
           }}
           label="Socket"
@@ -70,16 +63,17 @@ const AddGraph = () => {
 
           {availSockets.length === 0 && (
             <MenuItem className={classes.label} value="none">
-              None Availabe
+              None Available
             </MenuItem>
           )}
 
           {availSockets.length > 0 &&
-            availSockets.map((socket, key) => (
+            availSockets.map((socket: any, key: number) => (
               <MenuItem
                 key={key}
                 className={classes.label}
                 value={socket.socketName}
+                title={`${socket.interval} ms`}
               >
                 {socket.socketName}
               </MenuItem>

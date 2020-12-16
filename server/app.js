@@ -24,21 +24,19 @@ const generateRandomData = (name, interval) => {
   const date = new Date();
 
   return {
-    stock: name,
     interval: interval,
     time: date.getTime(),
-    currentPrice: Math.floor(Math.random() * Math.floor(100)),
     yOpen: Math.floor(Math.random() * Math.floor(100)),
     yClose: Math.floor(Math.random() * Math.floor(100)),
-    unitsSold: Math.floor(Math.random() * Math.floor(100)),
-    unitsPurchased: Math.floor(Math.random() * Math.floor(100)),
     yLow: Math.floor(Math.random() * Math.floor(100)),
     yHigh: Math.floor(Math.random() * Math.floor(100)),
+    stock: name,
   };
 };
 
 const openSockets = [
-  { socketName: "DFZ Incorporated", interval: 1000 },
+  { socketName: "DFZ Incorporated", interval: 250 },
+  { socketName: "HireMe Ltd", interval: 1000 },
   { socketName: "Bitcoin Corporation", interval: 2500 },
 ];
 
@@ -58,9 +56,9 @@ app.post("/create", (req, res, next) => {
   }
 });
 
-const sendSocketData = (s, d) => {
-  const p = generateRandomData(d.socketName, d.interval);
-  s.emit(d.socketName, p);
+const sendSocketData = (sock, d) => {
+  const payload = generateRandomData(d.socketName, d.interval);
+  sock.emit(d.socketName, payload);
 };
 
 io.on("connection", (socket) => {
@@ -74,10 +72,10 @@ io.on("connection", (socket) => {
     console.log("Client disconnected");
   });
 
-  socket.on("createSocket", () => {
-    console.log("Handling createSocket request");
-    socket.emit("getNewSocketList", JSON.stringify(openSockets));
-  });
+  // socket.on("createSocket", () => {
+  //   console.log("Handling createSocket request");
+  //   socket.emit("getNewSocketList", JSON.stringify(openSockets));
+  // });
 
   socket.on("error", (error) => {
     console.log(error);

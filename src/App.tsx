@@ -21,7 +21,11 @@ function App() {
     left: false,
   });
 
-  const toggleDrawer = (anchor, open) => (event) => {
+  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+  const toggleDrawer = (anchor: string, open: boolean) => (event: {
+    type: string;
+    key: string;
+  }) => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")

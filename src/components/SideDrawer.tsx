@@ -6,8 +6,13 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 
-export default function SideDrawer({ state, toggleDrawer }) {
-  const list = (anchor) => (
+export default function SideDrawer(props: {
+  state: any;
+  toggleDrawer: Function;
+}) {
+  const { state, toggleDrawer } = props;
+
+  const list = (anchor: string) => (
     <div
       style={{ width: 200 + "px" }}
       role="presentation"
@@ -28,11 +33,7 @@ export default function SideDrawer({ state, toggleDrawer }) {
   return (
     <div>
       <React.Fragment key={"left"}>
-        <Drawer
-          left={"left"}
-          open={state["left"]}
-          onClose={toggleDrawer("left", false)}
-        >
+        <Drawer open={state["left"]} onClose={toggleDrawer("left", false)}>
           {list("left")}
         </Drawer>
       </React.Fragment>

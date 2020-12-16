@@ -5,6 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleSocket, addSocketData } from "../../actions";
 import calcDiff from "../../utils/calcDiff";
+import { RootState } from "../../reducers";
 
 import SocketContext from "../../socket";
 import styled from "styled-components";
@@ -55,8 +56,9 @@ const ToggleGraph = styled.div`
   display: inline-block;
 `;
 
-const Toggler = ({ index, stockName }) => {
-  const socketData = useSelector((state) => state.socketReducer);
+const Toggler = (props: { index: number; stockName: string }) => {
+  const { index, stockName } = props;
+  const socketData = useSelector((state: RootState) => state.socketReducer);
   const socket = useContext(SocketContext);
 
   const dispatch = useDispatch();
@@ -67,7 +69,7 @@ const Toggler = ({ index, stockName }) => {
       console.log("closing", stockName);
       socket.off(stockName);
     } else {
-      socket.on(stockName, (data) => {
+      socket.on(stockName, (data: any) => {
         dispatch(addSocketData({ data, index }));
       });
       console.log("opening", stockName);
@@ -95,13 +97,20 @@ const Toggler = ({ index, stockName }) => {
   );
 };
 
-const TopBar = ({ index, currentValue, prevValue, stockName }) => {
+const TopBar = (props: {
+  index: number;
+  currentValue: any;
+  prevValue: any;
+  stockName: string;
+}) => {
+  const { index, currentValue, prevValue, stockName } = props;
   const CurrentState = () => {
-    const difference = calcDiff(currentValue.y, prevValue.y).toFixed(2);
+    // Nope broken af
+    const difference = calcDiff(currentValue.y[0], prevValue.y[3]).toFixed(2);
     return (
       <>
         <TLBox>
-          <TLCornerBox1>{currentValue.y}</TLCornerBox1>
+          <TLCornerBox1>{currentValue.y[1]}</TLCornerBox1>
 
           {currentValue.y > prevValue.y ? (
             <TLCornerBoxHigh>+{difference}%</TLCornerBoxHigh>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import Card from "../components/styledComponents/Card";
+import Card from "./styledComponents/Card";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,7 @@ const AddSocket = () => {
 
   const socket = useContext(SocketContext);
 
-  const AdddNewChart = async () => {
+  const AdddNewChart = async (): Promise<void> => {
     socket.emit();
     dispatch(
       addChart({
@@ -25,10 +25,12 @@ const AddSocket = () => {
       socketName: newChartName,
       interval: newChartInterval,
     };
-    await axios.post("http://localhost:4001/create", newSocket).then((res) => {
-      console.log(res);
-      socket.emit("createSocket");
-    });
+    await axios
+      .post("http://192.168.1.47:4001/create", newSocket)
+      .then((res) => {
+        console.log(res);
+        socket.emit("createSocket");
+      });
   };
 
   return (
@@ -53,19 +55,19 @@ const AddSocket = () => {
         value={newChartInterval}
         placeholder="Broadcast Interval"
         onChange={(e) => {
-          setNewChartInterval(e.target.value);
+          setNewChartInterval(parseInt(e.target.value));
         }}
         type="number"
       ></input>
 
-      {(newChartName !== "" || newChartInterval) !== "" ? (
+      {newChartName !== "" ? (
         <Button
           style={{ margin: 0.5 + "rem", padding: 0.9 + "rem" }}
           variant="outlined"
           color="primary"
           size="large"
           onClick={() => {
-            AdddNewChart(newChartName, newChartInterval);
+            AdddNewChart();
           }}
         >
           Create Socket
@@ -78,7 +80,7 @@ const AddSocket = () => {
           color="primary"
           size="large"
           onClick={() => {
-            AdddNewChart(newChartName, newChartInterval);
+            AdddNewChart();
           }}
         >
           Create Socket

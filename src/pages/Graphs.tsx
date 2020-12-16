@@ -8,6 +8,8 @@ import BuyAStock from "../components/BuyAStock";
 import StockInv from "../components/StockInv";
 import AddSocket from "../components/AddSocket";
 
+import ErrorBoundary from "./ErrorBoundary";
+
 import Card from "../components/styledComponents/Card";
 
 const GraphCards = styled.div`
@@ -31,8 +33,6 @@ const GraphCard = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   padding: 0 1rem 1rem 1rem;
-  min-width: 28vw;
-  max-width: 90vw;
 
   @media (max-width: 1025px) {
     width: 98vw;
@@ -41,7 +41,7 @@ const GraphCard = styled.div`
 `;
 
 const Graphs = () => {
-  const socketData = useSelector((state) => state.socketReducer);
+  const socketData = useSelector((state: any) => state.socketReducer);
 
   return (
     <div>
@@ -56,19 +56,21 @@ const Graphs = () => {
       >
         <AddGraph />
       </Card>
+      <ErrorBoundary>
+        <GraphCards>
+          {socketData.map((item: any, key: number) => (
+            <GraphCard key={key}>
+              <Graph index={key} stockName={item.stockName} />
 
-      <GraphCards>
-        {socketData.map((item, key) => (
-          <GraphCard key={key}>
-            <Graph index={key} data={item.data} stockName={item.stockName} />
-            <BuyAStock index={key} />
-          </GraphCard>
-        ))}
+              <BuyAStock index={key} />
+            </GraphCard>
+          ))}
 
-        <Card>
-          <StockInv />
-        </Card>
-      </GraphCards>
+          <Card>
+            <StockInv />
+          </Card>
+        </GraphCards>
+      </ErrorBoundary>
     </div>
   );
 };

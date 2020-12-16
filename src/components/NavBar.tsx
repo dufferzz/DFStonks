@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     // width: "100%",
   },
 }));
-export default function NavBar({ toggleDrawer }) {
+export default function NavBar(props: { toggleDrawer: Function }) {
+  const { toggleDrawer } = props;
   const classes = useStyles();
 
   return (

@@ -1,4 +1,8 @@
-const authReducer = (state = { isLoggedIn: false }, action) => {
+// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+const authReducer = (
+  state = { isLoggedIn: false },
+  action: { type: string }
+) => {
   switch (action.type) {
     case "doLogin":
       return { isLoggedIn: (state.isLoggedIn = true) };

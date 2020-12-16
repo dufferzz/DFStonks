@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { RootState } from "../reducers";
 
 const Table = styled.table`
   width: 100%;
@@ -15,7 +16,9 @@ const THead = styled.thead`
 `;
 
 const StockInv = () => {
-  const inventoryState = useSelector((state) => state.inventoryReducer);
+  const inventoryState = useSelector(
+    (state: RootState) => state.inventoryReducer
+  );
 
   return (
     <Table>
@@ -32,7 +35,7 @@ const StockInv = () => {
             <td colSpan={3}>#NoStonks</td>
           </tr>
         )}
-        {inventoryState.map((item, key) => (
+        {inventoryState.map((item: any, key: number) => (
           <tr key={key}>
             <td>{item?.stockName}</td>
             <td>{item?.price}</td>
