@@ -2,14 +2,16 @@ import React, { useState, useEffect, useContext } from "react";
 
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import moment from "moment";
+import { addSocketData } from "../../slices/SocketData";
+import dayjs from "dayjs";
 
-import { addSocketData } from "../../actions";
+// import { addSocketData } from "../../actions";
 import ReactApexChart from "react-apexcharts";
 
 import { RootState } from "../../reducers";
 import SocketContext from "../../socket";
 import TopBar from "./TopBar";
+
 const GraphPadding = styled.div`
   padding: 0.3rem;
   @media only screen and (max-width: 1025px) {
@@ -33,107 +35,110 @@ const GraphTitle = styled.div`
   padding: 0;
 `;
 
-// vvvvvvvvvvvvvv
-export default function Graph(props: { index: number; stockName: string }) {
-  const { index, stockName } = props;
+export const Graph = React.memo(
+  (props: { index: number; stockName: string }) => {
+    const { index, stockName } = props;
 
-  const socket = useContext(SocketContext);
-  const socketData = useSelector((state: RootState) => state.socketReducer);
-  const dispatch = useDispatch();
+    const socket = useContext(SocketContext);
+    const socketData = useSelector((state: RootState) => state.socketSlice);
+    const dispatch = useDispatch();
 
-  let currentValue = {
-    stockName,
-    y: 0,
-    x: 0,
-    isActive: true,
-  };
+    let currentValue = {
+      stockName,
+      y: 0,
+      x: 0,
+      isActive: true,
+    };
 
-  let prevValue = currentValue;
+    let prevValue = currentValue;
 
-  // errrrrm
-  if (typeof socketData[index].data[index] !== "undefined") {
-    if (socketData[index].data[index].data.length >= 2) {
-      currentValue = socketData[index].data[index].data.slice(-1)[0];
-      prevValue = socketData[index].data[index].data.slice(-2)[0];
+    // errrrrm
+    if (typeof socketData[index].series !== "undefined") {
+      if (socketData[index].series[0].data.length >= 2) {
+        currentValue = socketData[index].series[0].data.slice(-1)[0];
+        prevValue = socketData[index].series[0].data.slice(-2)[0];
+      }
     }
-  }
 
-  useEffect(() => {
-    console.log("socket opening:", stockName, index);
-    socket.on(stockName, (data: any) => {
-      dispatch(addSocketData({ data, index }));
+    useEffect(() => {
+      console.log("socket opening:", stockName, index);
+      socket.on(stockName, (data: any) => {
+        dispatch(addSocketData({ data, index }));
+      });
+
+      const stopSocket = () => {
+        console.log("socket is stopping:", stockName);
+        socket.off(stockName);
+      };
+
+      return () => {
+        stopSocket();
+      };
+    }, [dispatch, stockName, socket, index]);
+
+    const [options, setOptions] = useState({
+      options: {
+        chart: {
+          type: "candlestick",
+          height: 350,
+          animations: {
+            enabled: false,
+            easing: "easeinout",
+            speed: 800,
+            animateGradually: {
+              enabled: false,
+              delay: 150,
+            },
+            dynamicAnimation: {
+              enabled: false,
+              speed: 350,
+            },
+          },
+        },
+        xaxis: {
+          type: "category",
+          labels: {
+            formatter: function (val: Date) {
+              return dayjs(val).format("HH:mm:ss");
+            },
+          },
+        },
+        yaxis: {
+          tooltip: {
+            enabled: true,
+          },
+        },
+        legend: {
+          show: true,
+        },
+      },
     });
 
-    const stopSocket = () => {
-      console.log("socket is stopping:", stockName);
-      socket.off(stockName);
-    };
+    return (
+      <div>
+        <GraphTitle>{stockName}</GraphTitle>
+        <GraphContainer>
+          <TopBar
+            index={index}
+            currentValue={currentValue}
+            prevValue={prevValue}
+            stockName={stockName}
+          />
 
-    return () => {
-      stopSocket();
-    };
-  }, [dispatch, stockName, socket, index]);
+          <GraphPadding>
+            {socketData[index].series[0].data.length > 0 && (
+              <ReactApexChart
+                options={options.options}
+                series={socketData[index].series.slice()}
+                type="candlestick"
+                height={350}
+              />
+            )}
+          </GraphPadding>
+        </GraphContainer>
+      </div>
+    );
+  }
+);
 
-  const [options, setOptions] = useState({
-    options: {
-      chart: {
-        type: "candlestick",
-        height: 350,
-        animations: {
-          enabled: true,
-          easing: "easeinout",
-          speed: 800,
-          animateGradually: {
-            enabled: true,
-            delay: 150,
-          },
-          dynamicAnimation: {
-            enabled: false,
-            speed: 350,
-          },
-        },
-      },
-      xaxis: {
-        type: "category",
-        labels: {
-          formatter: function (val: Date) {
-            return moment(val).format("HH:mm:ss");
-          },
-        },
-      },
-      yaxis: {
-        tooltip: {
-          enabled: true,
-        },
-      },
-      legend: {
-        show: false,
-      },
-    },
-  });
-
-  return (
-    <div>
-      <GraphTitle>{stockName}</GraphTitle>
-      <GraphContainer>
-        <TopBar
-          index={index}
-          currentValue={currentValue}
-          prevValue={prevValue}
-          stockName={stockName}
-        />
-
-        <GraphPadding>
-          {socketData[index].data.length > 0 && (
-            <ReactApexChart
-              options={options.options}
-              series={socketData[index].data}
-              type="candlestick"
-              height={350}
-            />
-          )}
-        </GraphPadding>
-      </GraphContainer>
-    </div>
-  );
-}
+export default Graph;

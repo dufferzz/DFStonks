@@ -6,11 +6,11 @@ import { RootState } from "../reducers";
 
 const BuyAStock = (props: { index: number }) => {
   const { index } = props;
-  const socketData = useSelector((state: RootState) => state.socketReducer);
+  const socketData = useSelector((state: RootState) => state.socketSlice);
 
   const dispatch = useDispatch();
 
-  const currentValue = socketData[index].data.slice(-1)[0];
+  const currentValue = socketData[index].series.slice(-1)[0];
 
   const buyAStock = () => {
     const item = {

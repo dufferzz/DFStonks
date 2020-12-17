@@ -3,7 +3,9 @@ import Switch from "@material-ui/core/Switch";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleSocket, addSocketData } from "../../actions";
+// import { toggleSocket, addSocketData } from "../../actions";
+import { toggleSocket, addSocketData } from "../../slices/SocketData";
+
 import calcDiff from "../../utils/calcDiff";
 import { RootState } from "../../reducers";
 
@@ -58,12 +60,13 @@ const ToggleGraph = styled.div`
 
 const Toggler = (props: { index: number; stockName: string }) => {
   const { index, stockName } = props;
-  const socketData = useSelector((state: RootState) => state.socketReducer);
+  const socketData = useSelector((state: RootState) => state.socketSlice);
   const socket = useContext(SocketContext);
 
   const dispatch = useDispatch();
 
   const toggleGraph = () => {
+    dispatch(toggleSocket(index));
     console.log("Toggling graph..");
     if (socketData[index].isActive) {
       console.log("closing", stockName);
@@ -74,7 +77,6 @@ const Toggler = (props: { index: number; stockName: string }) => {
       });
       console.log("opening", stockName);
     }
-    dispatch(toggleSocket(index));
   };
 
   return (

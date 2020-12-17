@@ -41,7 +41,7 @@ const GraphCard = styled.div`
 `;
 
 const Graphs = () => {
-  const socketData = useSelector((state: any) => state.socketReducer);
+  const socketData = useSelector((state: any) => state.socketSlice);
 
   return (
     <div>

@@ -28,7 +28,11 @@ NOTE: yarn start defaults to HOST=0.0.0.0 for mobile testing - change start scri
 
 ## Before Running
 
-Change ENDPOINT to current Host IP (or localhost) in src/components/Graph/Graph.js
+Change ENDPOINT to current Host IP (or leave as defaults (or) localhost) in:
+
+- src/socket.js
+- src/components/AddGraph.tsx
+- src/components/AddSocket.tsx
 
 ## Default start (Requires Concurrently!)
 

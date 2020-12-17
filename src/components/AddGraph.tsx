@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addChart } from "../actions";
+// import { addChart } from "../actions";
 
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,8 +10,10 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-
+import { connect } from "react-redux";
+import { createSocket } from "../slices/SocketData";
 import axios, { AxiosResponse } from "axios";
+const mapDispatch = { createSocket };
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -30,11 +32,20 @@ const AddGraph = () => {
   const dispatch = useDispatch();
   const [selectedSocket, setSelectedSocket] = useState("none");
   const [availSockets, setAvailSockets] = useState([]);
+  const [httpError, setHttpError] = useState(false);
 
   const getSockets = async () => {
-    axios.get(`http://192.168.1.47:4001`).then((res: AxiosResponse) => {
-      setAvailSockets(res.data);
-    });
+    try {
+      await axios
+        .get(`https://socket.dufferz.net`)
+        .then((res: AxiosResponse) => {
+          setAvailSockets(res.data);
+          setHttpError(false);
+        });
+    } catch (error) {
+      setHttpError(true);
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -43,6 +54,21 @@ const AddGraph = () => {
 
   return (
     <>
+      {httpError && (
+        <h5>
+          Unable to get sockets!
+          <Button
+            style={{ margin: 0.5 + "rem", padding: 0.9 + "rem" }}
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              getSockets();
+            }}
+          >
+            Retry..
+          </Button>
+        </h5>
+      )}
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel className={classes.label} id="selSocketLabel">
           Available Sockets
@@ -90,7 +116,7 @@ const AddGraph = () => {
           size="large"
           onClick={() => {
             dispatch(
-              addChart({
+              createSocket({
                 title: selectedSocket,
                 isActive: true,
               })
@@ -107,7 +133,7 @@ const AddGraph = () => {
           size="large"
           onClick={() => {
             dispatch(
-              addChart({
+              createSocket({
                 title: selectedSocket,
                 isActive: true,
               })
@@ -121,4 +147,4 @@ const AddGraph = () => {
   );
 };
 
-export default AddGraph;
+export default connect(null, mapDispatch)(AddGraph);

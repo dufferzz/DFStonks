@@ -73,8 +73,8 @@ const generateRandomData = (name, interval) => {
 };
 
 const openSockets = [
-  { socketName: "DFZ Incorporated", interval: 250 },
-  { socketName: "HireMe Ltd", interval: 1000 },
+  { socketName: "DFZ Incorporated", interval: 100 },
+  { socketName: "HireMe Ltd", interval: 2000 },
   { socketName: "Bitcoin Corporation", interval: 2500 },
 ];
 

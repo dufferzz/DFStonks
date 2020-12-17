@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { addSocketData, toggleSocket, addChart } from "../actions";
-import moment from "moment";
+import dayjs from "dayjs";
 // Sweet mother of no destructuring.. I will change the server to spit out better data later :)
 const initialState: any[] = [];
 
@@ -11,45 +11,60 @@ const socketReducer = createReducer(initialState, (builder) => {
       isActive: true,
       dataLimit: 25,
       display: "candlestick",
-      data: [],
+      data: [
+        {
+          data: [
+            {
+              x: new Date().getTime(),
+              y: [0, 0, 0, 0],
+            },
+          ],
+        },
+      ],
     };
     state.push(newItem);
   });
 
   builder.addCase(addSocketData, (state, action) => {
-    const { index, time, data } = action.payload;
-    const sock = state[index];
+    let { index, time, data } = action.payload;
+    time = dayjs(time).format();
+
+    const curState = state[index];
     const { yOpen, yLow, yHigh, yClose } = data;
 
-    if (sock.data.length === 0) {
-      sock.data = [
+    if (curState.data.length === 0) {
+      console.log("curState.data len 0");
+      curState.data = [
         {
           data: [
             {
-              x: moment(time).format(),
+              x: time,
               y: [yOpen, yLow, yHigh, yClose],
             },
           ],
         },
       ];
     } else {
-      if (typeof sock.data[index] !== "undefined") {
+      if (typeof curState.data[index] !== "undefined") {
         console.log("ok reached if");
-        //ITS BROKEN JIM but it does actually present proper data.. Fix later + proper types
-        sock.data[index].data.push({
-          x: moment(time).format(),
+        //ITS BROKEN JIM but it does actually present proper data on first graph.. Fix later + proper types
+        // memory leaks AF
+        // incorrect data on graph index > 0
+        curState.data[index].data.push({
+          x: time,
           y: [yOpen, yLow, yHigh, yClose],
         });
 
-        if (sock.data[index].data.length > 25) {
-          sock.data[index].data.shift();
+        if (curState.data[index].data.length > 25) {
+          curState.data[index].data.shift();
         }
       } else {
         console.log("other else");
-        sock.data.push({
+        console.log(curState.data);
+        curState.data[index].data.push({
           data: [
             {
-              x: moment(time).format(),
+              x: time,
               y: [yOpen, yLow, yHigh, yClose],
             },
           ],

@@ -1,10 +1,12 @@
 import { authReducer } from "./authReducer";
 import { inventoryReducer } from "./inventoryReducer";
-import { socketReducer } from "./socketReducer";
+// import { socketReducer } from "./socketReducer";
+import socketSlice from "../slices/SocketData";
+
 import { combineReducers } from "redux";
 const r = {
   authReducer: authReducer,
-  socketReducer: socketReducer,
+  socketSlice: socketSlice,
   inventoryReducer: inventoryReducer,
 };
 
