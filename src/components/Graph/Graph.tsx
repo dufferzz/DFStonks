@@ -106,6 +106,9 @@ export default function Graph(props: { index: number; stockName: string }) {
           enabled: true,
         },
       },
+      legend: {
+        show: false,
+      },
     },
   });
 
