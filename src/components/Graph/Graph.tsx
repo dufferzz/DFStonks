@@ -51,11 +51,12 @@ export default function Graph(props: { index: number; stockName: string }) {
   let prevValue = currentValue;
 
   // errrrrm
-
-  // if (socketData[index].data[index].data.length >= 2) {
-  //   currentValue = socketData[index].data[index].data.slice(-1)[0];
-  //   prevValue = socketData[index].data[index].data.slice(-2)[0];
-  // }
+  if (typeof socketData[index].data[index] !== "undefined") {
+    if (socketData[index].data[index].data.length >= 2) {
+      currentValue = socketData[index].data[index].data.slice(-1)[0];
+      prevValue = socketData[index].data[index].data.slice(-2)[0];
+    }
+  }
 
   useEffect(() => {
     console.log("socket opening:", stockName, index);

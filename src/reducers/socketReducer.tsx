@@ -33,14 +33,27 @@ const socketReducer = createReducer(initialState, (builder) => {
         },
       ];
     } else {
-      //ITS BROKEN JIM but it does actually present proper data.. Fix later + proper types
-      sock.data[index].data.push({
-        x: moment(time).format(),
-        y: [yOpen, yLow, yHigh, yClose],
-      });
+      if (typeof sock.data[index] !== "undefined") {
+        console.log("ok reached if");
+        //ITS BROKEN JIM but it does actually present proper data.. Fix later + proper types
+        sock.data[index].data.push({
+          x: moment(time).format(),
+          y: [yOpen, yLow, yHigh, yClose],
+        });
 
-      if (sock.data[index].data.length > 25) {
-        sock.data[index].data.shift();
+        if (sock.data[index].data.length > 25) {
+          sock.data[index].data.shift();
+        }
+      } else {
+        console.log("other else");
+        sock.data.push({
+          data: [
+            {
+              x: moment(time).format(),
+              y: [yOpen, yLow, yHigh, yClose],
+            },
+          ],
+        });
       }
     }
   });
