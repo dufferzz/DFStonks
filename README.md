@@ -22,7 +22,7 @@ Potential Todos:
 
 ## Live Demo
 
-[https://stonks.dufferz.net](https//stonks.dufferz.net)
+[https://stonks.dufferz.net](https://stonks.dufferz.net)
 
 ## Important Notes
 
