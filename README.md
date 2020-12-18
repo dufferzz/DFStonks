@@ -24,6 +24,8 @@ Potential Todos:
 
 [https://stonks.dufferz.net](https//stonks.dufferz.net)
 
+## Important Notes
+
 Client runs on :3000
 
 Server runs on :4001
