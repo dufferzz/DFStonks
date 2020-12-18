@@ -58,7 +58,7 @@ const ToggleGraph = styled.div`
   display: inline-block;
 `;
 
-const Toggler = (props: { index: number; stockName: string }) => {
+const Toggler = React.memo((props: { index: number; stockName: string }) => {
   const { index, stockName } = props;
   const socketData = useSelector((state: RootState) => state.socketSlice);
   const socket = useContext(SocketContext);
@@ -70,7 +70,8 @@ const Toggler = (props: { index: number; stockName: string }) => {
     console.log("Toggling graph..");
     if (socketData[index].isActive) {
       console.log("closing", stockName);
-      socket.off(stockName);
+      socket.off(stockName); // This no nice, closes all sockets with same name.. need to fix
+      // no point having duplicate data for the same stock.. other graph may be diff type
     } else {
       socket.on(stockName, (data: any) => {
         dispatch(addSocketData({ data, index }));
@@ -97,39 +98,43 @@ const Toggler = (props: { index: number; stockName: string }) => {
       </FormGroup>
     </ToggleGraph>
   );
-};
+});
 
-const TopBar = (props: {
-  index: number;
-  currentValue: any;
-  prevValue: any;
-  stockName: string;
-}) => {
-  const { index, currentValue, prevValue, stockName } = props;
-  const CurrentState = () => {
-    // Nope broken af
-    const difference = calcDiff(currentValue.y[0], prevValue.y[3]).toFixed(2);
+const TopBar = React.memo(
+  (props: {
+    index: number;
+    currentValue: any;
+    prevValue: any;
+    stockName: string;
+  }) => {
+    const { index, currentValue, prevValue, stockName } = props;
+    const CurrentState = () => {
+      // Nope broken af
+      const difference = calcDiff(currentValue.open, prevValue.close).toFixed(
+        2
+      );
+      return (
+        <>
+          <TLBox>
+            <TLCornerBox1>{currentValue.open}</TLCornerBox1>
+
+            {currentValue.open > prevValue.close ? (
+              <TLCornerBoxHigh>+{difference}%</TLCornerBoxHigh>
+            ) : (
+              <TLCornerBoxLow>-{difference}%</TLCornerBoxLow>
+            )}
+          </TLBox>
+        </>
+      );
+    };
+
     return (
-      <>
-        <TLBox>
-          <TLCornerBox1>{currentValue.y[1]}</TLCornerBox1>
-
-          {currentValue.y > prevValue.y ? (
-            <TLCornerBoxHigh>+{difference}%</TLCornerBoxHigh>
-          ) : (
-            <TLCornerBoxLow>-{difference}%</TLCornerBoxLow>
-          )}
-        </TLBox>
-      </>
+      <GraphTopBar>
+        <Toggler index={index} stockName={stockName} />
+        <CurrentState />
+      </GraphTopBar>
     );
-  };
-
-  return (
-    <GraphTopBar>
-      <Toggler index={index} stockName={stockName} />
-      <CurrentState />
-    </GraphTopBar>
-  );
-};
+  }
+);
 
 export default TopBar;

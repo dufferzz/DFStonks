@@ -1,12 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Card from "./styledComponents/Card";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
 import { createSocket } from "../slices/SocketData";
-// import { addChart } from "../actions";
-import SocketContext from "../socket";
 const mapDispatch = { createSocket };
 
 const AddSocket = () => {
@@ -15,16 +13,14 @@ const AddSocket = () => {
 
   const dispatch = useDispatch();
 
-  const socket = useContext(SocketContext);
-
   const AdddNewChart = async (): Promise<void> => {
-    socket.emit();
-    // dispatch(
-    createSocket({
-      title: newChartName,
-      isActive: true,
-    });
-    // );
+    // socket.emit();
+    dispatch(
+      createSocket({
+        title: newChartName,
+        isActive: true,
+      })
+    );
     const newSocket = {
       socketName: newChartName,
       interval: newChartInterval,
@@ -33,7 +29,8 @@ const AddSocket = () => {
       .post("https://socket.dufferz.net/create", newSocket)
       .then((res) => {
         console.log(res);
-        socket.emit("createSocket");
+
+        // socket.emit("createSocket");
       });
   };
 

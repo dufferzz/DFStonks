@@ -8,7 +8,7 @@ const Table = styled.table`
   margin: auto;
   text-align: center;
   border-collapse: collapse;
-  min-height: 30vh;
+  height: max-content;
   min-width: 30vw;
 `;
 const THead = styled.thead`

@@ -3,10 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { addSocketData } from "../../slices/SocketData";
-import dayjs from "dayjs";
-
-// import { addSocketData } from "../../actions";
-import ReactApexChart from "react-apexcharts";
+import Chart from "kaktana-react-lightweight-charts";
 
 import { RootState } from "../../reducers";
 import SocketContext from "../../socket";
@@ -76,40 +73,18 @@ export const Graph = React.memo(
       };
     }, [dispatch, stockName, socket, index]);
 
-    const [options, setOptions] = useState({
+    const [options2] = useState({
       options: {
-        chart: {
-          type: "candlestick",
-          height: 350,
-          animations: {
-            enabled: false,
-            easing: "easeinout",
-            speed: 800,
-            animateGradually: {
-              enabled: false,
-              delay: 150,
-            },
-            dynamicAnimation: {
-              enabled: false,
-              speed: 350,
-            },
-          },
-        },
-        xaxis: {
-          type: "category",
-          labels: {
-            formatter: function (val: Date) {
-              return dayjs(val).format("HH:mm:ss");
-            },
-          },
-        },
-        yaxis: {
-          tooltip: {
-            enabled: true,
-          },
-        },
-        legend: {
-          show: true,
+        alignLabels: true,
+
+        timeScale: {
+          fixLeftEdge: false,
+          lockVisibleTimeRangeOnResize: true,
+          borderVisible: false,
+          borderColor: "#fff000",
+          visible: true,
+          timeVisible: true,
+          secondsVisible: false,
         },
       },
     });
@@ -127,11 +102,12 @@ export const Graph = React.memo(
 
           <GraphPadding>
             {socketData[index].series[0].data.length > 0 && (
-              <ReactApexChart
-                options={options.options}
-                series={socketData[index].series.slice()}
-                type="candlestick"
-                height={350}
+              <Chart
+                darkTheme={true}
+                options={options2.options}
+                candlestickSeries={socketData[index].series.slice()}
+                autoWidth
+                height={320}
               />
             )}
           </GraphPadding>

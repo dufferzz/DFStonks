@@ -1,24 +1,21 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { addToInventory } from "../actions";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../reducers";
+import { useDispatch } from "react-redux";
 
-const BuyAStock = (props: { index: number }) => {
-  const { index } = props;
-  const socketData = useSelector((state: RootState) => state.socketSlice);
-
+const BuyAStock = (props: { item: any }) => {
+  const { item } = props;
   const dispatch = useDispatch();
 
-  const currentValue = socketData[index].series.slice(-1)[0];
-
   const buyAStock = () => {
-    const item = {
-      stockName: currentValue.stockName,
-      price: currentValue.y,
-      qty: 1,
-    };
-    dispatch(addToInventory(item));
+    console.log(item);
+    dispatch(
+      addToInventory({
+        stockName: item.stockName,
+        price: item.series[0].data.slice(-1)[0].close,
+        qty: 1,
+      })
+    );
   };
 
   return (
@@ -28,7 +25,7 @@ const BuyAStock = (props: { index: number }) => {
       color="primary"
       onClick={buyAStock}
     >
-      Buy {currentValue?.stockName} Stock
+      Buy {item.stockName} Stock
     </Button>
   );
 };

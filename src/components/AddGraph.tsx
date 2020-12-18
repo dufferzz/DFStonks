@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-// import { addChart } from "../actions";
-
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";

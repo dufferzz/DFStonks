@@ -20,6 +20,10 @@ Potential Todos:
 - Fix duplicate socket connections when 2 same graphs are open
 - Move ENDPOINT variable to a one-time modal which saves to localStorage
 
+## Live Demo
+
+[https://stonks.dufferz.net](https//stonks.dufferz.net)
+
 Client runs on :3000
 
 Server runs on :4001
@@ -37,7 +41,7 @@ Change ENDPOINT to current Host IP (or leave as defaults (or) localhost) in:
 ## Default start (Requires Concurrently!)
 
 ```bash
-    yarn install && cd server && yarn install && cd .. && yarn start
+    yarn install && cd server && npm i && cd .. && yarn start
 
 ```
 

@@ -73,9 +73,9 @@ const generateRandomData = (name, interval) => {
 };
 
 const openSockets = [
-  { socketName: "DFZ Incorporated", interval: 100 },
-  { socketName: "HireMe Ltd", interval: 2000 },
-  { socketName: "Bitcoin Corporation", interval: 2500 },
+  { socketName: "DFZ Incorporated", interval: 200 },
+  { socketName: "HireMe Ltd", interval: 500 },
+  { socketName: "Bitcoin Corporation", interval: 750 },
 ];
 
 app.get("/", (req, res, next) => {

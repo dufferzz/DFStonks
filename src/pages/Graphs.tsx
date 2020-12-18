@@ -14,7 +14,7 @@ import Card from "../components/styledComponents/Card";
 
 const GraphCards = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   // grid-template-columns: auto;
   grid-gap: 1rem;
   grid-template-rows: auto;
@@ -33,19 +33,21 @@ const GraphCard = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
   padding: 0 1rem 1rem 1rem;
+  width: 43vw;
 
   @media (max-width: 1025px) {
-    width: 98vw;
+    width: 95vw;
+    // max-width: 95vw;
     padding: 0;
   }
 `;
 
-const Graphs = () => {
+const Graphs = React.memo(() => {
   const socketData = useSelector((state: any) => state.socketSlice);
 
   return (
     <div>
-      <AddSocket />
+      {/* <AddSocket /> */}
       <Card
         style={{
           width: "fit-content",
@@ -62,17 +64,16 @@ const Graphs = () => {
             <GraphCard key={key}>
               <Graph index={key} stockName={item.stockName} />
 
-              <BuyAStock index={key} />
+              <BuyAStock item={item} />
             </GraphCard>
           ))}
-
-          <Card>
-            <StockInv />
-          </Card>
         </GraphCards>
+        <Card style={{ marginTop: 0.8 + "rem" }}>
+          <StockInv />
+        </Card>
       </ErrorBoundary>
     </div>
   );
-};
+});
 
 export default Graphs;
