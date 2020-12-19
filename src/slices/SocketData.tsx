@@ -6,12 +6,11 @@ const socketSlice = createSlice({
   name: "SocketData",
   initialState: initialState,
   reducers: {
-    createSocket(state: any, action: any) {
+    createSocket(state: any, action: { payload: { title: string } }) {
       console.log("create socket called");
-      const { title, index } = action.payload;
+      const { title } = action.payload;
       state.push({
         stockName: title,
-        index: index,
         isActive: true,
         dataLimit: 150,
         display: "candlestick",
@@ -19,7 +18,7 @@ const socketSlice = createSlice({
       });
     },
 
-    toggleSocket(state: any, action: any) {
+    toggleSocket(state: any, action: { payload: number }) {
       const index = action.payload;
       //   console.log(action.payload);
       state[index].isActive = !state[index].isActive;

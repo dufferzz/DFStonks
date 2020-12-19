@@ -12,8 +12,6 @@ import ErrorBoundary from "./ErrorBoundary";
 
 import Card from "../components/styledComponents/Card";
 
-import { ThemeContext } from "../theme/ThemeStore";
-
 const GraphCards = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -46,7 +44,6 @@ const GraphCard = styled.div`
 
 const Graphs = React.memo(() => {
   const socketData = useSelector((state: any) => state.socketSlice);
-  const { theme, switchTheme } = useContext(ThemeContext);
 
   return (
     <div>
@@ -60,19 +57,6 @@ const Graphs = React.memo(() => {
         }}
       >
         <AddGraph />
-        {theme === "dark" ? (
-          <div
-            onClick={() => {
-              switchTheme("light");
-              console.log(theme);
-            }}
-          >
-            {" "}
-            go dark{" "}
-          </div>
-        ) : (
-          <div onClick={() => switchTheme("dark")}> eyeburner! </div>
-        )}
       </Card>
 
       <ErrorBoundary>

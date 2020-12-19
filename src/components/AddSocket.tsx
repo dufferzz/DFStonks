@@ -18,7 +18,6 @@ const AddSocket = () => {
     dispatch(
       createSocket({
         title: newChartName,
-        isActive: true,
       })
     );
     const newSocket = {

@@ -13,7 +13,7 @@ const Container = styled.div`
   @media (max-width: 1025px) {
     padding: 0;
     margin: 0;
-    width: 100% !important;
+    width: 99% !important;
   }
 `;
 

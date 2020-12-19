@@ -14,7 +14,12 @@ export default function SideDrawer(props: {
 
   const list = (anchor: string) => (
     <div
-      style={{ width: 200 + "px" }}
+      style={{
+        width: 200 + "px",
+        backgroundColor: "#1f1c30",
+        color: "white",
+        height: 100 + "%",
+      }}
       role="presentation"
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
@@ -23,6 +28,11 @@ export default function SideDrawer(props: {
         <Link to="/">
           <ListItem>
             <ListItemText primary="Stonks Simulator" />
+          </ListItem>
+        </Link>
+        <Link to="/inventory">
+          <ListItem>
+            <ListItemText primary="Stock Inventory" />
           </ListItem>
         </Link>
       </List>

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
   label: {
-    color: "#3e5197",
+    color: "#7e8896",
   },
 }));
 
@@ -116,7 +116,6 @@ const AddGraph = () => {
             dispatch(
               createSocket({
                 title: selectedSocket,
-                isActive: true,
               })
             );
           }}
@@ -133,7 +132,6 @@ const AddGraph = () => {
             dispatch(
               createSocket({
                 title: selectedSocket,
-                isActive: true,
               })
             );
           }}
