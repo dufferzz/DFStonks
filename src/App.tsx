@@ -11,6 +11,9 @@ import ContentContainer from "./components/styledComponents/ContentContainer";
 
 import styled from "styled-components";
 
+import { ThemeStore } from "./theme/ThemeStore";
+import Theme from "./theme/Theme";
+
 const AppContainer = styled.div`
   text-align: center;
   min-height: 100vh;
@@ -37,21 +40,23 @@ function App() {
 
   return (
     <SocketContext.Provider value={socket}>
-      <Router>
-        <AppContainer>
-          <NavBar toggleDrawer={toggleDrawer} />
-          <SideDrawer state={drawerState} toggleDrawer={toggleDrawer} />
-          <Container>
-            <ContentContainer>
-              <Switch>
-                <Route exact path="/">
-                  <Graphs />
-                </Route>
-              </Switch>
-            </ContentContainer>
-          </Container>
-        </AppContainer>
-      </Router>
+      <ThemeStore>
+        <Router>
+          <AppContainer>
+            <NavBar toggleDrawer={toggleDrawer} />
+            <SideDrawer state={drawerState} toggleDrawer={toggleDrawer} />
+            <Container>
+              <ContentContainer>
+                <Switch>
+                  <Route exact path="/">
+                    <Graphs />
+                  </Route>
+                </Switch>
+              </ContentContainer>
+            </Container>
+          </AppContainer>
+        </Router>
+      </ThemeStore>
     </SocketContext.Provider>
   );
 }

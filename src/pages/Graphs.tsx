@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -11,6 +11,8 @@ import AddSocket from "../components/AddSocket";
 import ErrorBoundary from "./ErrorBoundary";
 
 import Card from "../components/styledComponents/Card";
+
+import { ThemeContext } from "../theme/ThemeStore";
 
 const GraphCards = styled.div`
   display: grid;
@@ -28,7 +30,7 @@ const GraphCards = styled.div`
 `;
 
 const GraphCard = styled.div`
-  background-color: #1f1c30;
+  background-color: "${(props) => props.theme}";
   // border: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 10px;
@@ -44,6 +46,7 @@ const GraphCard = styled.div`
 
 const Graphs = React.memo(() => {
   const socketData = useSelector((state: any) => state.socketSlice);
+  const { theme, switchTheme } = useContext(ThemeContext);
 
   return (
     <div>
@@ -57,7 +60,21 @@ const Graphs = React.memo(() => {
         }}
       >
         <AddGraph />
+        {theme === "dark" ? (
+          <div
+            onClick={() => {
+              switchTheme("light");
+              console.log(theme);
+            }}
+          >
+            {" "}
+            go dark{" "}
+          </div>
+        ) : (
+          <div onClick={() => switchTheme("dark")}> eyeburner! </div>
+        )}
       </Card>
+
       <ErrorBoundary>
         <GraphCards>
           {socketData.map((item: any, key: number) => (
