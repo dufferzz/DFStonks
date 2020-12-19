@@ -22,7 +22,6 @@ function App() {
     left: false,
   });
 
-  // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
   const toggleDrawer = (anchor: string, open: boolean) => (event: {
     type: string;
     key: string;

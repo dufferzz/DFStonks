@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { addSocketData } from "../../slices/SocketData";
+import { addSocketData } from "../../features/SocketData";
 import Chart from "kaktana-react-lightweight-charts";
 
-import { RootState } from "../../reducers";
+import { RootState } from "../../features";
 import SocketContext from "../../socket";
 import TopBar from "./TopBar";
 

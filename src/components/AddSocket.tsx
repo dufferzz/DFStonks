@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { connect } from "react-redux";
-import { createSocket } from "../slices/SocketData";
+import { createSocket } from "../features/SocketData";
 const mapDispatch = { createSocket };
 
 const AddSocket = () => {
