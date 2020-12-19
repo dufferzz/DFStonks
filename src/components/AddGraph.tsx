@@ -9,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { connect } from "react-redux";
-import { createSocket } from "../slices/SocketData";
+import { createSocket } from "../features/SocketData";
 import axios, { AxiosResponse } from "axios";
 const mapDispatch = { createSocket };
 

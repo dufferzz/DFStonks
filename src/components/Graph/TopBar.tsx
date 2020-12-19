@@ -4,10 +4,10 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useSelector, useDispatch } from "react-redux";
 // import { toggleSocket, addSocketData } from "../../actions";
-import { toggleSocket, addSocketData } from "../../slices/SocketData";
+import { toggleSocket, addSocketData } from "../../features/SocketData";
 
 import calcDiff from "../../utils/calcDiff";
-import { RootState } from "../../reducers";
+import { RootState } from "../../features";
 
 import SocketContext from "../../socket";
 import styled from "styled-components";

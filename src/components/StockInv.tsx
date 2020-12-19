@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { RootState } from "../reducers";
+import { RootState } from "../features";
 
 const Table = styled.table`
   width: 100%;
@@ -17,7 +17,7 @@ const THead = styled.thead`
 
 const StockInv = () => {
   const inventoryState = useSelector(
-    (state: RootState) => state.inventoryReducer
+    (state: RootState) => state.inventorySlice
   );
 
   return (

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { addToInventory } from "../actions";
+// import { addToInventory } from "../actions";
+import { addToInventory } from "../features/InventoryData";
 import { useDispatch } from "react-redux";
 
 const BuyAStock = (props: { item: any }) => {
